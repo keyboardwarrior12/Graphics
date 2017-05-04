@@ -78,6 +78,7 @@ namespace Template
 		{
 			for( int s = width * height, p = 0; p < s; p++ ) pixels[p] = c;
 		}
+
         // copy the surface to another surface
 		public void CopyTo( Surface target, int x = 0, int y = 0 )
 		{
