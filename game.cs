@@ -8,17 +8,31 @@ class Game
 	// member variables
 	public Surface screen;
     private double alpha;
+
+        //voor assenstelsel aanpassen:
+        int minX = -2;
+        int maxX = 2;
+        int minY = -6;
+        int maxY = 2;
+
+        //deze passen we aan in de init
+        int centerX = 2
+            , centerY = 2;
+
+        //voor zoomen
+        int zoom = 2;
+
 	// initialize
 	public void Init()
 	{
             alpha = 0;
-    }
+        }
 	// tick: renders one frame
 	public void Tick()
 	{
         screen.Clear(0);
-		screen.Print( "hello world", 2, 2, 0xffffff );
-        screen.Line(2, 20, 160, 20, 0xff0000);
+		//screen.Print( "hello world", 2, 2, 0xffffff );
+        //screen.Line(2, 20, 160, 20, 0xff0000);
 
             /*
             //named x x because its x, same for y, double for loop cos it makes things easier
@@ -63,9 +77,9 @@ class Game
 
             alpha += .01;
 
-            //van -1 naar 1 lijnen getekent op x en y zodat op de foto duidelijk wordt dat het werkt zoals het hoort.
-            screen.Line(TX(-1), TY(0), TX(1), TY(0), whiteColor);
-            screen.Line(TX(0), TY(1), TX(0), TY(-1), whiteColor);
+            //teken x- en y-as
+            screen.Line(TX(minX), TY(0), TX(maxX), TY(0), whiteColor);
+            screen.Line(TX(0), TY(minY), TX(0), TY(maxY), whiteColor);
         }
 
         //createColor (with bitshifting)
@@ -74,21 +88,29 @@ class Game
             return (r << 16) + (g << 8) + b;
         }
 
-        //assenstelsel gaat van -2 naar 2. Als je x van 2 meekrijgt, wil je hem helemaal rechts: hij wordt hier 4.
-        //dan doe je x wordt (in dit geval) 4 * screen.width / 4 dus hij wordt screen width dus helemaal rechts.
+        //centerx en y om origin te verplaatsen. Bij centerx = 0 en y = 0 krijgen we dus
+        //de origin in de linker-bovenhoek van het scherm te zien.
         private int TX(float x)
         {
-            x += 2;
-            x = x * (screen.width / 4);
+            //add view center offset
+            x += (2 * zoom) - centerX;
+            //scale
+            x *= (screen.width / 4);
+            //zoom function
+            x = x / zoom;
             return (int)x;
         }
 
         private int TY(float y)
         {
-            y += 2;
-            y = y * (screen.height / 4);
-            //eerst scalen, dan pas reversen (voor simpelheid)
-            y = screen.height - y;
+            //offset
+            y += (2 * zoom) - centerY;
+            //scale
+            y *= (screen.height / 4);
+            //zoom (higher zoom = zooming out)
+            y /= zoom;
+            //reverse de y
+            y = (screen.height - y);
             return (int)y;
         }
     }
