@@ -1,39 +1,40 @@
-﻿using System;
+﻿using OpenTK;
+using OpenTK.Input;
+using System;
 using System.IO;
 
 namespace Template {
 
 class Game
 {
-	// member variables
-	public Surface screen;
+    // member variables
+    public Surface screen;
     private double alpha;
+    KeyboardState keyboardState, lastKeyboardState;
 
-        //voor assenstelsel aanpassen:
-        int minX = -2;
-        int maxX = 2;
-        int minY = -6;
-        int maxY = 2;
+    //voor assenstelsel aanpassen:
+    int minX = -2;
+    int maxX = 2;
+    int minY = -6;
+    int maxY = 2;
 
-        //deze passen we aan in de init
-        int centerX = 2
-            , centerY = 2;
+    //deze passen we aan in de init
+    int centerX = 0
+        , centerY = 0;
 
-        //voor zoomen
-        int zoom = 2;
+    //voor zoomen
+    int zoom = 2;
 
 	// initialize
 	public void Init()
 	{
             alpha = 0;
-        }
+            
+    }
 	// tick: renders one frame
 	public void Tick()
 	{
         screen.Clear(0);
-		//screen.Print( "hello world", 2, 2, 0xffffff );
-        //screen.Line(2, 20, 160, 20, 0xff0000);
-
             /*
             //named x x because its x, same for y, double for loop cos it makes things easier
         for (int x = 0; x < 256; x++)
@@ -80,6 +81,8 @@ class Game
             //teken x- en y-as
             screen.Line(TX(minX), TY(0), TX(maxX), TY(0), whiteColor);
             screen.Line(TX(0), TY(minY), TX(0), TY(maxY), whiteColor);
+
+            handleKeyPresses();
         }
 
         //createColor (with bitshifting)
@@ -92,27 +95,85 @@ class Game
         //de origin in de linker-bovenhoek van het scherm te zien.
         private int TX(float x)
         {
-            //add view center offset
-            x += (2 * zoom) - centerX;
-            //scale
-            x *= (screen.width / 4);
-            //zoom function
-            x = x / zoom;
+            x += (2 * zoom) - centerX;  //offset
+            x *= (screen.width / 4);    //scale
+            x = x / zoom;            //zoom extra
             return (int)x;
         }
 
         private int TY(float y)
         {
-            //offset
-            y += (2 * zoom) - centerY;
-            //scale
-            y *= (screen.height / 4);
+            y += (2 * zoom) - centerY;            //offset
+            y *= (screen.height / 4);            //scale
             //zoom (higher zoom = zooming out)
             y /= zoom;
             //reverse de y
             y = (screen.height - y);
             return (int)y;
         }
+
+        private void keyPress(object sender, KeyPressEventArgs e)
+        {
+                if (e.KeyChar == 'z')
+            {
+                zoom -= 1;
+            }
+                if (e.KeyChar == 'x')
+            {
+                zoom += 1;
+            }
+        }
+
+        void handleKeyPresses()
+        {
+            keyboardState = Keyboard.GetState();
+
+            //keypresses
+            if (KeyPress(Key.Z))
+            {
+                if (zoom > 1)
+                {
+                    //we willen niet erdoor heen kunnen zoomen, minimale zoom = 1.
+                    zoom -= 1;
+                }
+            }
+
+            if (KeyPress(Key.X))
+            {
+                zoom += 1;
+            }
+
+            //allemaal - of + zoom zodat we als we verder zijn uitgezoomd nogsteeds best snel kunnen verplaatsen van center
+            if (KeyPress(Key.Left))
+            {
+                centerX -= zoom;
+            }
+
+            if (KeyPress(Key.Right))
+            {
+                centerX += zoom;
+            }
+
+            if (KeyPress(Key.Down))
+            {
+                centerY -= zoom;
+            }
+
+            if (KeyPress(Key.Up))
+            {
+                centerY += zoom;
+            }
+
+            // Store current state for next comparison;
+            lastKeyboardState = keyboardState;
+        }
+
+        //van stackoverflow
+        public bool KeyPress(Key key)
+        {
+            return (keyboardState[key] && (keyboardState[key] != lastKeyboardState[key]));
+        }
+
     }
 
 } // namespace Template
