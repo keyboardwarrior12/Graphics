@@ -57,7 +57,7 @@ namespace Template
 			GL.BindTexture( TextureTarget.Texture2D, screenID );
 			GL.TexImage2D( TextureTarget.Texture2D, 0, PixelInternalFormat.Rgba, 
 						   game.screen.width, game.screen.height, 0, 
-						   OpenTK.Graphics.OpenGL.PixelFormat.Bgra, 
+						   PixelFormat.Bgra, 
 						   PixelType.UnsignedByte, game.screen.pixels 
 						 );
 			// clear window contents, prepare for generic openGL rendering
@@ -80,6 +80,10 @@ namespace Template
 			GL.TexCoord2( 1.0f, 0.0f ); GL.Vertex2(  1.0f,  1.0f );
 			GL.TexCoord2( 0.0f, 0.0f ); GL.Vertex2( -1.0f,  1.0f );
 			GL.End();
+            //prepare for generic opengl rendering
+            GL.Enable(EnableCap.DepthTest);
+            GL.Disable(EnableCap.Texture2D);
+            GL.Clear(ClearBufferMask.DepthBufferBit);
             //render GL
             game.RenderGL();
 			// tell OpenTK we're done rendering

@@ -11,6 +11,9 @@ class Game
     // member variables
     public Surface screen;
     KeyboardState keyboardState, lastKeyboardState;
+        double a = 0;
+        Surface map;
+        float[,] h;
 
     //voor assenstelsel aanpassen:
     int minX = -2;
@@ -28,13 +31,21 @@ class Game
 	// initialize
 	public void Init()
 	{
-        
+            map = new Surface("../../assets/heightmap.png");
+            h = new float[128, 128];
+            for (int y = 0; y < 128; y++)
+            {
+                for (int x = 0; x < 128; x++)
+                {
+                    h[x, y] = ((float)(map.pixels[x + y * 128] & 255)) / 256;
+                }
+            }
     }
 	// tick: renders one frame
 	public void Tick()
-	{
-        screen.Clear(0);
-
+	    {
+            screen.Clear(0);
+            a += .03;
             handleKeyPresses();
         }
 
@@ -129,6 +140,12 @@ class Game
 
         public void RenderGL()
         {
+            var M = Matrix4.CreatePerspectiveFieldOfView(1.6f, 1.3f, .1f, 1000);
+            GL.LoadMatrix(ref M);
+            GL.Translate(0, 0, -1);
+            GL.Rotate(110, 1, 0, 0);
+            GL.Rotate(a * 180 / 3.14159, 0, 0, 1);
+
             GL.Color3(0.0f, 1.0f, 1.0f);
             GL.Begin(PrimitiveType.Triangles);
             GL.Vertex3(-0.5f, -0.5f, 0);
