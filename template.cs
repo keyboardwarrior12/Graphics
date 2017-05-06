@@ -63,6 +63,7 @@ namespace Template
 			// clear window contents, prepare for generic openGL rendering
 			GL.Clear( ClearBufferMask.ColorBufferBit);
             GL.Clear(ClearBufferMask.DepthBufferBit);
+            //state modifiers van onLoad
             GL.ClearColor(Color.Black);
             GL.Enable(EnableCap.Texture2D);
             GL.Disable(EnableCap.DepthTest);
@@ -80,7 +81,7 @@ namespace Template
 			GL.TexCoord2( 0.0f, 0.0f ); GL.Vertex2( -1.0f,  1.0f );
 			GL.End();
             //render GL
-            //game.RenderGL();
+            game.RenderGL();
 			// tell OpenTK we're done rendering
 			SwapBuffers();
 		}
