@@ -150,6 +150,8 @@ class Game
             */
 
             int scale = 256;
+            
+            //For loop max / scale = 0.5. Dus loop loopt van 0.0nogiets - 0.5 en niet tot 1.0 wat wel de bedoeling is, denk ik. 
 
             //GL.Color3(0.0f, 1.0f, 1.0f);
             for (int y = 0; y < 128; y++)
@@ -159,13 +161,13 @@ class Game
                     float forx = (float)x / scale;
                     float fory = (float)y / scale;
                     float forh = h[x, y];
-
-                    GL.Color3((float)x/scale, (float)x/scale, (float)x/scale);
+                    
+                    GL.Color3(forx, fory, fory);  //blue and red colors 
                     GL.Begin(PrimitiveType.Quads);
                     GL.Vertex3(-forx, -fory, forh);
                     GL.Vertex3(forx, -fory, forh);
-                    GL.Vertex3(forx, fory, forh);
                     GL.Vertex3(-forx, fory, forh);
+                    GL.Vertex3(forx, fory, forh);
                     GL.End();
                 }
             }
