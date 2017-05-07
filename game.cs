@@ -14,9 +14,10 @@ class Game
         double a = 0;
         Surface map;
         float[,] h;
+        float[] vertexData;
 
-    //deze passen we aan in de init
-    int centerX = 0
+        //deze passen we aan in de init
+        int centerX = 0
         , centerY = 0;
 
     //voor zoomen
@@ -34,7 +35,8 @@ class Game
                     h[x, y] = ((float)(map.pixels[x + y * 128] & 255)) / 256;
                 }
             }
-    }
+            vertexData = new float[127 * 127 * 2 * 3 * 3];
+        }
 	// tick: renders one frame
 	public void Tick()
 	    {
@@ -162,12 +164,14 @@ class Game
                     float fory = (float)y / scale;
                     float forh = h[x, y];
                     
-                    GL.Color3(forx, fory, fory);  //blue and red colors 
+                    GL.Color3(1.0f, 0.0f, 0.0f);  //red colors 
                     GL.Begin(PrimitiveType.Quads);
                     GL.Vertex3(-forx, -fory, forh);
                     GL.Vertex3(forx, -fory, forh);
                     GL.Vertex3(-forx, fory, forh);
                     GL.Vertex3(forx, fory, forh);
+
+                    //Hier nog een quad voor de blauwe zodat ze door elkaar heen gaan. 
                     GL.End();
                 }
             }
