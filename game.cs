@@ -15,12 +15,6 @@ class Game
         Surface map;
         float[,] h;
 
-    //voor assenstelsel aanpassen:
-    int minX = -2;
-    int maxX = 2;
-    int minY = -6;
-    int maxY = 2;
-
     //deze passen we aan in de init
     int centerX = 0
         , centerY = 0;
@@ -45,7 +39,7 @@ class Game
 	public void Tick()
 	    {
             screen.Clear(0);
-            a += .03;
+            a += .01;
             handleKeyPresses();
         }
 
@@ -146,12 +140,35 @@ class Game
             GL.Rotate(110, 1, 0, 0);
             GL.Rotate(a * 180 / 3.14159, 0, 0, 1);
 
+            /*
             GL.Color3(0.0f, 1.0f, 1.0f);
             GL.Begin(PrimitiveType.Triangles);
             GL.Vertex3(-0.5f, -0.5f, 0);
             GL.Vertex3(0.5f, -0.5f, 0);
             GL.Vertex3(-0.5f, 0.5f, 0);
             GL.End();
+            */
+
+            int scale = 256;
+
+            //GL.Color3(0.0f, 1.0f, 1.0f);
+            for (int y = 0; y < 128; y++)
+            {
+                for (int x = 0; x < 128; x++)
+                {
+                    float forx = (float)x / scale;
+                    float fory = (float)y / scale;
+                    float forh = h[x, y];
+
+                    GL.Color3((float)x/scale, (float)x/scale, (float)x/scale);
+                    GL.Begin(PrimitiveType.Quads);
+                    GL.Vertex3(-forx, -fory, forh);
+                    GL.Vertex3(forx, -fory, forh);
+                    GL.Vertex3(forx, fory, forh);
+                    GL.Vertex3(-forx, fory, forh);
+                    GL.End();
+                }
+            }
         }
     }
 
