@@ -6,26 +6,27 @@ using OpenTK.Graphics.OpenGL;
 
 namespace Template {
 
-class Game
-{
-    // member variables
-    public Surface screen;
-    KeyboardState keyboardState, lastKeyboardState;
+    class Game
+    {
+        // member variables
+        public Surface screen;
+        KeyboardState keyboardState, lastKeyboardState;
         double a = 0;
         Surface map;
         float[,] h;
         float[] vertexData;
+        int VBO;
 
         //deze passen we aan in de init
         int centerX = 0
         , centerY = 0;
 
-    //voor zoomen
-    int zoom = 2;
+        //voor zoomen
+        int zoom = 2;
 
-	// initialize
-	public void Init()
-	{
+        // initialize
+        public void Init()
+        {
             map = new Surface("../../assets/heightmap.png");
             h = new float[128, 128];
             for (int y = 0; y < 128; y++)
@@ -36,6 +37,55 @@ class Game
                 }
             }
             vertexData = new float[127 * 127 * 2 * 3 * 3];
+
+
+
+            int i = 0;
+            float scale = 1 / 128f;
+            float hscale = -1 / 4f;
+            for (int y = 0; y < 127; y++)
+            {
+                for (int x = 0; x < 127; x++)
+                {
+                    float x1 = (x - 64) * scale;
+                    float x2 = x1 + scale;
+                    float y1 = (y - 64) * scale;
+                    float y2 = y1 + scale;
+
+                    //beware of spaghetti code
+                    //dit is een driehoek, we slaan op als xyz xyz xyz
+                    vertexData[i] = x2;
+                    vertexData[i + 1] = y1;
+                    vertexData[i + 2] = h[x + 1, y] * hscale;
+                    vertexData[i + 3] = x1;
+                    vertexData[i + 4] = y1;
+                    vertexData[i + 5] = h[x, y] * hscale;
+                    vertexData[i + 6] = x1;
+                    vertexData[i + 7] = y2;
+                    vertexData[i + 8] = h[x, y + 1] * hscale;
+
+                    //2e driehoek wajeuw
+                    vertexData[i + 9] = x1;
+                    vertexData[i + 10] = y2;
+                    vertexData[i + 11] = h[x, y + 1] * hscale;
+                    vertexData[i + 12] = x2;
+                    vertexData[i + 13] = y2;
+                    vertexData[i + 14] = h[x + 1, y + 1] * hscale;
+                    vertexData[i + 15] = x2;
+                    vertexData[i + 16] = y1;
+                    vertexData[i + 17] = h[x + 1, y] * hscale;
+                    i += 18;
+                }
+            }
+
+            VBO = GL.GenBuffer();
+
+            GL.BindBuffer(BufferTarget.ArrayBuffer, VBO);
+            GL.BufferData<float>(BufferTarget.ArrayBuffer, (IntPtr)(vertexData.Length * 4),
+                vertexData, BufferUsageHint.StaticDraw
+            );
+            GL.EnableClientState(ArrayCap.VertexArray);
+            GL.VertexPointer(3, VertexPointerType.Float, 12, 0);
         }
 	// tick: renders one frame
 	public void Tick()
@@ -142,28 +192,15 @@ class Game
             GL.Rotate(110, 1, 0, 0);
             GL.Rotate(a * 180 / 3.14159, 0, 0, 1);
 
-            /*
-            GL.Color3(0.0f, 1.0f, 1.0f);
-            GL.Begin(PrimitiveType.Triangles);
-            GL.Vertex3(-0.5f, -0.5f, 0);
-            GL.Vertex3(0.5f, -0.5f, 0);
-            GL.Vertex3(-0.5f, 0.5f, 0);
-            GL.End();
-            */
+            GL.Color3(.5f, 1f, .8f);
 
-            float scale = 1/128f;
-            float hscale = -1 / 4f;
-            int i = 0; 
-            //GL.Color3(0.0f, 1.0f, 1.0f);
-            for (int y = 0; y < 127; y++)
-            {
-                for (int x = 0; x < 127; x++)
-                {
-                    float x1 = (x - 64) * scale;
-                    float x2 = x1 + scale;
-                    float y1 = ( y - 64) * scale;
-                    float y2 = y1 + scale;
+            GL.BindBuffer(BufferTarget.ArrayBuffer, VBO);
+            GL.DrawArrays(
+            PrimitiveType.Triangles, 0, 127 * 127 * 2 * 3);
 
+            
+
+                    /*
                     GL.Begin(PrimitiveType.Triangles);
                     GL.Color3(1.0f, 0.0f, 0.0f);
                     GL.Vertex3(x2, y1, h[x + 1, y] *hscale );
@@ -176,9 +213,7 @@ class Game
                     GL.Vertex3(x1, y2, h[x, y + 1] * hscale);
                     GL.Vertex3(x2, y2, h[x + 1, y + 1] * hscale);
                     GL.Vertex3(x2, y1, h[x + 1, y] * hscale);
-                    GL.End();
-                }
-            }
+                    GL.End();*/
         }
     }
 
