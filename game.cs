@@ -151,34 +151,31 @@ class Game
             GL.End();
             */
 
-            int scale = 256;
+            float scale = 1/128f;
+            float hscale = -1 / 4f;
             int i = 0; 
             //GL.Color3(0.0f, 1.0f, 1.0f);
-            for (int y = 0; y < 128; y++)
+            for (int y = 0; y < 127; y++)
             {
-                for (int x = 0; x < 128; x++)
+                for (int x = 0; x < 127; x++)
                 {
-                    float forx = (float)x / scale;
-                    float fory = (float)y / scale;
-                    float forh = h[x, y] * -0.2f;
+                    float x1 = (x - 64) * scale;
+                    float x2 = x1 + scale;
+                    float y1 = ( y - 64) * scale;
+                    float y2 = y1 + scale;
 
-                    if (i == 0)
-                    {   //red colors
-                        GL.Color3(1.0f, 0.0f, 0.0f);
-                        i = 1;
-                    }
-                    else
-                    {
-                        // blue colors
-                        GL.Color3(0.0f, 0.0f, 1.0f);
-                        i = 0;
-                    }  
+                    GL.Begin(PrimitiveType.Triangles);
+                    GL.Color3(1.0f, 0.0f, 0.0f);
+                    GL.Vertex3(x2, y1, h[x + 1, y] *hscale );
+                    GL.Vertex3(x1, y1, h[x, y] * hscale);
+                    GL.Vertex3(x1, y2, h[x, y + 1] * hscale);
+                    GL.End();
 
-                    GL.Begin(PrimitiveType.Quads);
-                    GL.Vertex3(-forx, -fory, forh);
-                    GL.Vertex3(forx, -fory, forh);
-                    GL.Vertex3(-forx, fory, forh);
-                    GL.Vertex3(forx, fory, forh);
+                    GL.Begin(PrimitiveType.Triangles);
+                    GL.Color3(0.0f, 0.0f, 1.0f);
+                    GL.Vertex3(x1, y2, h[x, y + 1] * hscale);
+                    GL.Vertex3(x2, y2, h[x + 1, y + 1] * hscale);
+                    GL.Vertex3(x2, y1, h[x + 1, y] * hscale);
                     GL.End();
                 }
             }
