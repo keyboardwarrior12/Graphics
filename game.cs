@@ -15,7 +15,9 @@ namespace Template {
         Surface map;
         float[,] h;
         float[] vertexData;
-        int VBO;
+        int VBO, vbo_pos, vbo_col;
+
+        int programID, vsID, fsID, attribute_vpos, attribute_vcol, uniform_mview;
 
         //deze passen we aan in de init
         int centerX = 0
@@ -78,6 +80,31 @@ namespace Template {
                 }
             }
 
+            //deel voor shaders linken
+            programID = GL.CreateProgram();
+            LoadShader("../../shaders/vs.glsl", ShaderType.VertexShader,
+                programID, out vsID);
+            LoadShader("../../shaders/fs.glsl", ShaderType.FragmentShader,
+                programID, out fsID);
+            GL.LinkProgram(programID);
+
+            attribute_vpos = GL.GetAttribLocation(programID, "vPosition");
+            attribute_vcol = GL.GetAttribLocation(programID, "vColor");
+            uniform_mview = GL.GetUniformLocation(programID, "M");
+
+            vbo_pos = GL.GenBuffer();
+            GL.BindBuffer(BufferTarget.ArrayBuffer, vbo_pos);
+            GL.BufferData<float>(BufferTarget.ArrayBuffer,
+            (IntPtr)(vertexData.Length * 4), vertexData, BufferUsageHint.StaticDraw);
+            GL.VertexAttribPointer(attribute_vpos, 3, VertexAttribPointerType.Float, false, 0, 0);
+
+            vbo_col = GL.GenBuffer();
+            GL.BindBuffer(BufferTarget.ArrayBuffer, vbo_col);
+            GL.BufferData<float>(BufferTarget.ArrayBuffer,
+            (IntPtr)(vertexData.Length * 4), vertexData, BufferUsageHint.StaticDraw);
+            GL.VertexAttribPointer(attribute_vcol, 3, VertexAttribPointerType.Float, false, 0, 0);
+
+            //deel voor buffer
             VBO = GL.GenBuffer();
 
             GL.BindBuffer(BufferTarget.ArrayBuffer, VBO);
@@ -186,35 +213,57 @@ namespace Template {
 
         public void RenderGL()
         {
+            /* //dit moesten we weghalen voor ex 9
             var M = Matrix4.CreatePerspectiveFieldOfView(1.6f, 1.3f, .1f, 1000);
             GL.LoadMatrix(ref M);
             GL.Translate(0, 0, -1);
             GL.Rotate(110, 1, 0, 0);
-            GL.Rotate(a * 180 / 3.14159, 0, 0, 1);
+            GL.Rotate(a * 180 / 3.14159, 0, 0, 1);*/
 
-            GL.Color3(.5f, 1f, .8f);
+            Matrix4 M = Matrix4.CreateFromAxisAngle(new Vector3(0, 0, 1), (float)a);
+            M *= Matrix4.CreateFromAxisAngle(new Vector3(1, 0, 0), 1.9f);
+            M *= Matrix4.CreateTranslation(0, 0,-1);
+            M *= Matrix4.CreatePerspectiveFieldOfView(1.6f, 1.3f, .1f, 1000);
 
+            GL.UseProgram(programID);
+            GL.UniformMatrix4(uniform_mview, false, ref M);
+
+            GL.EnableVertexAttribArray(attribute_vpos);
+            GL.EnableVertexAttribArray(attribute_vcol);
+            GL.DrawArrays(PrimitiveType.Triangles, 0, 127 * 127 * 2 *3);
+
+
+            /* // dit moest ook weg
+             *             GL.Color3(.5f, 1f, .8f);
             GL.BindBuffer(BufferTarget.ArrayBuffer, VBO);
             GL.DrawArrays(
             PrimitiveType.Triangles, 0, 127 * 127 * 2 * 3);
+            */
 
-            
 
-                    /*
-                    GL.Begin(PrimitiveType.Triangles);
-                    GL.Color3(1.0f, 0.0f, 0.0f);
-                    GL.Vertex3(x2, y1, h[x + 1, y] *hscale );
-                    GL.Vertex3(x1, y1, h[x, y] * hscale);
-                    GL.Vertex3(x1, y2, h[x, y + 1] * hscale);
-                    GL.End();
+            /*
+            GL.Begin(PrimitiveType.Triangles);
+            GL.Color3(1.0f, 0.0f, 0.0f);
+            GL.Vertex3(x2, y1, h[x + 1, y] *hscale );
+            GL.Vertex3(x1, y1, h[x, y] * hscale);
+            GL.Vertex3(x1, y2, h[x, y + 1] * hscale);
+            GL.End();
 
-                    GL.Begin(PrimitiveType.Triangles);
-                    GL.Color3(0.0f, 0.0f, 1.0f);
-                    GL.Vertex3(x1, y2, h[x, y + 1] * hscale);
-                    GL.Vertex3(x2, y2, h[x + 1, y + 1] * hscale);
-                    GL.Vertex3(x2, y1, h[x + 1, y] * hscale);
-                    GL.End();*/
+            GL.Begin(PrimitiveType.Triangles);
+            GL.Color3(0.0f, 0.0f, 1.0f);
+            GL.Vertex3(x1, y2, h[x, y + 1] * hscale);
+            GL.Vertex3(x2, y2, h[x + 1, y + 1] * hscale);
+            GL.Vertex3(x2, y1, h[x + 1, y] * hscale);
+            GL.End();*/
+        }
+        void LoadShader(String name, ShaderType type, int program, out int ID)
+        {
+            ID = GL.CreateShader(type);
+            using (StreamReader sr = new StreamReader(name))
+                GL.ShaderSource(ID, sr.ReadToEnd());
+            GL.CompileShader(ID);
+            GL.AttachShader(program, ID);
+            Console.WriteLine(GL.GetShaderInfoLog(ID));
         }
     }
-
 } // namespace Template
