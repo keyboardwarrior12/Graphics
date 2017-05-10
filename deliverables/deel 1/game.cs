@@ -13,17 +13,17 @@ class Game
     private double alpha;
     KeyboardState keyboardState, lastKeyboardState;
 
-    //voor assenstelsel aanpassen:
+    //here we can change what parts of the axes we see
     int minX = -10;
     int maxX = 10;
     int minY = -10;
     int maxY = 10;
 
-    //deze passen we aan in de init
+    //we change these in the init
     int centerX = 0
         , centerY = 0;
 
-    //voor zoomen
+    //for zooming
     int zoom = 2;
 
 	// initialize
@@ -36,18 +36,6 @@ class Game
 	public void Tick()
 	{
         screen.Clear(0);
-            /*
-            //named x x because its x, same for y, double for loop cos it makes things easier
-        for (int x = 0; x < 256; x++)
-            {
-                for (int y = 0; y < 256; y++)
-                {
-                    //x + y * screen.width zorgt voor blok locatie, wat erna komt (k + p * screen.width) is voor offset
-                    //zodat het plaatje mooi gecentreerd is.
-                    screen.pixels[x + y * screen.width + 200 + 50 * screen.width] = createColor(x, y, 0);
-                }
-            }
-            */
             // top left corner
             float x1 = -1, y1 = 1.0f;
             float rx1 = (float)(x1 * Math.Cos(alpha) - y1 * Math.Sin(alpha));
@@ -71,7 +59,6 @@ class Game
 
             int redColor = createColor(255, 50, 50);
             int whiteColor = createColor(255, 255, 255);
-            //idk why maar als ik y values met TY doe dan werken ze niet
             screen.Line(TX(rx1), TY(ry1), TX(rx2), TY(ry2), redColor);
             screen.Line(TX(rx2), TY(ry2), TX(rx3), TY(ry3), redColor);
             screen.Line(TX(rx3), TY(ry3), TX(rx4), TY(ry4), redColor);
@@ -79,11 +66,11 @@ class Game
 
             alpha += .01;
 
-            //teken x- en y-as
+            //draw x and y axes
             screen.Line(TX(minX), TY(0), TX(maxX), TY(0), whiteColor);
             screen.Line(TX(0), TY(minY), TX(0), TY(maxY), whiteColor);
 
-            //teken de custom lijnen
+            //draw custom lines here ( y = ax + b, color c)
             int greenColor = createColor(40, 255, 40);
             drawLine(3, 5, greenColor);
 
@@ -96,8 +83,7 @@ class Game
             return (r << 16) + (g << 8) + b;
         }
 
-        //centerx en y om origin te verplaatsen. Bij centerx = 0 en y = 0 krijgen we dus
-        //de origin in de linker-bovenhoek van het scherm te zien.
+        //center x and y to move the O(rigin).
         private int TX(float x)
         {
             x += (2 * zoom) - centerX;  //offset
@@ -112,7 +98,7 @@ class Game
             y *= (screen.height / 4);            //scale
             //zoom (higher zoom = zooming out)
             y /= zoom;
-            //reverse de y
+            //reverse the y
             y = (screen.height - y);
             return (int)y;
         }
@@ -138,7 +124,7 @@ class Game
             {
                 if (zoom > 1)
                 {
-                    //we willen niet erdoor heen kunnen zoomen, minimale zoom = 1.
+                    //we don't want to be able to zoom through the window, so the minimum zoom is 1
                     zoom -= 1;
                 }
             }
@@ -148,7 +134,7 @@ class Game
                 zoom += 1;
             }
 
-            //allemaal - of + zoom zodat we als we verder zijn uitgezoomd nogsteeds best snel kunnen verplaatsen van center
+            //we do -zoom or +zoom so we can move quicker when zoomed out more.
             if (KeyPress(Key.Left))
             {
                 centerX -= zoom;
@@ -173,13 +159,13 @@ class Game
             lastKeyboardState = keyboardState;
         }
 
-        //van stackoverflow
+        //returning keyboard states for keypresses
         public bool KeyPress(Key key)
         {
             return (keyboardState[key] && (keyboardState[key] != lastKeyboardState[key]));
         }
 
-        //werkt volgens formule y = ax + b, en c is voor de kleur
+        //the formula is y = ax + b; c is for the color of the line (and the line formula print)
         void drawLine(int a, int b, int c)
         {
             // y for xmin (ly) and xmax (ry) for drawing
@@ -210,8 +196,10 @@ class Game
             }
 
             screen.Line(TX(lx), TY(ly), TX(rx), TY(ry), c);
-            //print de lijn formule dichtbij het midden vd lijn
-            screen.Print("y = " + a + "x + " + b, TX((lx + rx) / 2), TY((ly + ry) / 2), c);
+            //print the line formula close to the center of the line
+            //i've commented the command under here because the Print method we're given (from you) doesn't work properly
+            //it's giving an index out of bounds exception.
+            //screen.Print("y = " + a + "x + " + b, TX((lx + rx) / 2), TY((ly + ry) / 2), c);
         }
     }
 
