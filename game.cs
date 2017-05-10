@@ -19,11 +19,11 @@ namespace Template {
 
         int programID, vsID, fsID, attribute_vpos, attribute_vcol, uniform_mview;
 
-        //deze passen we aan in de init
+        //these will change in the initialize function
         int centerX = 0
         , centerY = 0;
 
-        //voor zoomen
+        //zoom
         int zoom = 2;
 
         // initialize
@@ -40,8 +40,6 @@ namespace Template {
             }
             vertexData = new float[127 * 127 * 2 * 3 * 3];
 
-
-
             int i = 0;
             float scale = 1 / 128f;
             float hscale = -1 / 4f;
@@ -54,8 +52,7 @@ namespace Template {
                     float y1 = (y - 64) * scale;
                     float y2 = y1 + scale;
 
-                    //beware of spaghetti code
-                    //dit is een driehoek, we slaan op als xyz xyz xyz
+                    //we save the triangle coordinates as: xyz xyz xyz.....
                     vertexData[i] = x2;
                     vertexData[i + 1] = y1;
                     vertexData[i + 2] = h[x + 1, y] * hscale;
@@ -66,7 +63,7 @@ namespace Template {
                     vertexData[i + 7] = y2;
                     vertexData[i + 8] = h[x, y + 1] * hscale;
 
-                    //2e driehoek wajeuw
+                    //second triangle coordinates
                     vertexData[i + 9] = x1;
                     vertexData[i + 10] = y2;
                     vertexData[i + 11] = h[x, y + 1] * hscale;
@@ -80,7 +77,7 @@ namespace Template {
                 }
             }
 
-            //deel voor shaders linken
+            //link the shaders with the text files
             programID = GL.CreateProgram();
             LoadShader("../../shaders/vs.glsl", ShaderType.VertexShader,
                 programID, out vsID);
@@ -104,7 +101,7 @@ namespace Template {
             (IntPtr)(vertexData.Length * 4), vertexData, BufferUsageHint.StaticDraw);
             GL.VertexAttribPointer(attribute_vcol, 3, VertexAttribPointerType.Float, false, 0, 0);
 
-            //deel voor buffer
+            //Bind the array with the buffer
             VBO = GL.GenBuffer();
 
             GL.BindBuffer(BufferTarget.ArrayBuffer, VBO);
@@ -144,7 +141,7 @@ namespace Template {
             y *= (screen.height / 4);            //scale
             //zoom (higher zoom = zooming out)
             y /= zoom;
-            //reverse de y
+            //reverse the y
             y = (screen.height - y);
             return (int)y;
         }
@@ -170,7 +167,7 @@ namespace Template {
             {
                 if (zoom > 1)
                 {
-                    //we willen niet erdoor heen kunnen zoomen, minimale zoom = 1.
+                    //minimal zoom = 1.
                     zoom -= 1;
                 }
             }
@@ -205,7 +202,7 @@ namespace Template {
             lastKeyboardState = keyboardState;
         }
 
-        //van stackoverflow
+        //Get the keyboard state
         public bool KeyPress(Key key)
         {
             return (keyboardState[key] && (keyboardState[key] != lastKeyboardState[key]));
@@ -213,12 +210,19 @@ namespace Template {
 
         public void RenderGL()
         {
-            /* //dit moesten we weghalen voor ex 9
+            //Code that was needed before exercise 9
+            /* 
             var M = Matrix4.CreatePerspectiveFieldOfView(1.6f, 1.3f, .1f, 1000);
             GL.LoadMatrix(ref M);
             GL.Translate(0, 0, -1);
             GL.Rotate(110, 1, 0, 0);
-            GL.Rotate(a * 180 / 3.14159, 0, 0, 1);*/
+            GL.Rotate(a * 180 / 3.14159, 0, 0, 1);
+            
+            GL.Color3(.5f, 1f, .8f);
+            GL.BindBuffer(BufferTarget.ArrayBuffer, VBO);
+            GL.DrawArrays(
+            PrimitiveType.Triangles, 0, 127 * 127 * 2 * 3);
+            */
 
             Matrix4 M = Matrix4.CreateFromAxisAngle(new Vector3(0, 0, 1), (float)a);
             M *= Matrix4.CreateFromAxisAngle(new Vector3(1, 0, 0), 1.9f);
@@ -231,30 +235,6 @@ namespace Template {
             GL.EnableVertexAttribArray(attribute_vpos);
             GL.EnableVertexAttribArray(attribute_vcol);
             GL.DrawArrays(PrimitiveType.Triangles, 0, 127 * 127 * 2 *3);
-
-
-            /* // dit moest ook weg
-             *             GL.Color3(.5f, 1f, .8f);
-            GL.BindBuffer(BufferTarget.ArrayBuffer, VBO);
-            GL.DrawArrays(
-            PrimitiveType.Triangles, 0, 127 * 127 * 2 * 3);
-            */
-
-
-            /*
-            GL.Begin(PrimitiveType.Triangles);
-            GL.Color3(1.0f, 0.0f, 0.0f);
-            GL.Vertex3(x2, y1, h[x + 1, y] *hscale );
-            GL.Vertex3(x1, y1, h[x, y] * hscale);
-            GL.Vertex3(x1, y2, h[x, y + 1] * hscale);
-            GL.End();
-
-            GL.Begin(PrimitiveType.Triangles);
-            GL.Color3(0.0f, 0.0f, 1.0f);
-            GL.Vertex3(x1, y2, h[x, y + 1] * hscale);
-            GL.Vertex3(x2, y2, h[x + 1, y + 1] * hscale);
-            GL.Vertex3(x2, y1, h[x + 1, y] * hscale);
-            GL.End();*/
         }
         void LoadShader(String name, ShaderType type, int program, out int ID)
         {
