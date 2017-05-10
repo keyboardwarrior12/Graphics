@@ -18,3 +18,4 @@ The movement just detects keyboard inputs. A higher zoom means you can see more 
 so that you can not zoom through the screen (1).
 
 You move around with the arrow keys.
+You zoom in with z, zoom out with x.
