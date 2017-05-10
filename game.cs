@@ -10,7 +10,6 @@ namespace Template {
     {
         // member variables
         public Surface screen;
-        KeyboardState keyboardState, lastKeyboardState;
         double a = 0;
         Surface map;
         float[,] h;
@@ -18,13 +17,6 @@ namespace Template {
         int VBO, vbo_pos, vbo_col;
 
         int programID, vsID, fsID, attribute_vpos, attribute_vcol, uniform_mview;
-
-        //these will change in the initialize function
-        int centerX = 0
-        , centerY = 0;
-
-        //zoom
-        int zoom = 2;
 
         // initialize
         public void Init()
@@ -43,6 +35,7 @@ namespace Template {
             int i = 0;
             float scale = 1 / 128f;
             float hscale = -1 / 4f;
+            //we couldn't think of a better method so we're using this.
             for (int y = 0; y < 127; y++)
             {
                 for (int x = 0; x < 127; x++)
@@ -52,7 +45,7 @@ namespace Template {
                     float y1 = (y - 64) * scale;
                     float y2 = y1 + scale;
 
-                    //we save the triangle coordinates as: xyz xyz xyz.....
+                    //we save the triangle coordinates as: xyz xyz xyz..... this is the first triangle
                     vertexData[i] = x2;
                     vertexData[i + 1] = y1;
                     vertexData[i + 2] = h[x + 1, y] * hscale;
@@ -89,6 +82,7 @@ namespace Template {
             attribute_vcol = GL.GetAttribLocation(programID, "vColor");
             uniform_mview = GL.GetUniformLocation(programID, "M");
 
+            //this whole part is for the buffer to work
             vbo_pos = GL.GenBuffer();
             GL.BindBuffer(BufferTarget.ArrayBuffer, vbo_pos);
             GL.BufferData<float>(BufferTarget.ArrayBuffer,
@@ -116,96 +110,12 @@ namespace Template {
 	    {
             screen.Clear(0);
             a += .01;
-            handleKeyPresses();
         }
 
         //createColor (with bitshifting)
         private int createColor(int r, int g, int b)
         {
             return (r << 16) + (g << 8) + b;
-        }
-
-        //centerx en y om origin te verplaatsen. Bij centerx = 0 en y = 0 krijgen we dus
-        //de origin in de linker-bovenhoek van het scherm te zien.
-        private int TX(float x)
-        {
-            x += (2 * zoom) - centerX;  //offset
-            x *= (screen.width / 4);    //scale
-            x = x / zoom;            //zoom extra
-            return (int)x;
-        }
-
-        private int TY(float y)
-        {
-            y += (2 * zoom) - centerY;            //offset
-            y *= (screen.height / 4);            //scale
-            //zoom (higher zoom = zooming out)
-            y /= zoom;
-            //reverse the y
-            y = (screen.height - y);
-            return (int)y;
-        }
-
-        private void keyPress(object sender, KeyPressEventArgs e)
-        {
-                if (e.KeyChar == 'z')
-            {
-                zoom -= 1;
-            }
-                if (e.KeyChar == 'x')
-            {
-                zoom += 1;
-            }
-        }
-
-        void handleKeyPresses()
-        {
-            keyboardState = Keyboard.GetState();
-
-            //keypresses
-            if (KeyPress(Key.Z))
-            {
-                if (zoom > 1)
-                {
-                    //minimal zoom = 1.
-                    zoom -= 1;
-                }
-            }
-
-            if (KeyPress(Key.X))
-            {
-                zoom += 1;
-            }
-
-            //allemaal - of + zoom zodat we als we verder zijn uitgezoomd nogsteeds best snel kunnen verplaatsen van center
-            if (KeyPress(Key.Left))
-            {
-                centerX -= zoom;
-            }
-
-            if (KeyPress(Key.Right))
-            {
-                centerX += zoom;
-            }
-
-            if (KeyPress(Key.Down))
-            {
-                centerY -= zoom;
-            }
-
-            if (KeyPress(Key.Up))
-            {
-                centerY += zoom;
-            }
-
-            // Store current state for next comparison;
-            lastKeyboardState = keyboardState;
-        }
-
-        //Get the keyboard state
-        public bool KeyPress(Key key)
-        {
-            return (keyboardState[key] && (keyboardState[key] != lastKeyboardState[key]));
         }
 
         public void RenderGL()
@@ -234,8 +144,11 @@ namespace Template {
 
             GL.EnableVertexAttribArray(attribute_vpos);
             GL.EnableVertexAttribArray(attribute_vcol);
+            //the array is filled correctly. We can now draw the triangles
             GL.DrawArrays(PrimitiveType.Triangles, 0, 127 * 127 * 2 *3);
         }
+
+        //loading the shader
         void LoadShader(String name, ShaderType type, int program, out int ID)
         {
             ID = GL.CreateShader(type);
