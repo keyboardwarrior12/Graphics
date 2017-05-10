@@ -14,10 +14,10 @@ class Game
     KeyboardState keyboardState, lastKeyboardState;
 
     //voor assenstelsel aanpassen:
-    int minX = -2;
-    int maxX = 2;
-    int minY = -6;
-    int maxY = 2;
+    int minX = -10;
+    int maxX = 10;
+    int minY = -10;
+    int maxY = 10;
 
     //deze passen we aan in de init
     int centerX = 0
@@ -82,6 +82,10 @@ class Game
             //teken x- en y-as
             screen.Line(TX(minX), TY(0), TX(maxX), TY(0), whiteColor);
             screen.Line(TX(0), TY(minY), TX(0), TY(maxY), whiteColor);
+
+            //teken de custom lijnen
+            int greenColor = createColor(40, 255, 40);
+            drawLine(3, 5, greenColor);
 
             handleKeyPresses();
         }
@@ -173,6 +177,41 @@ class Game
         public bool KeyPress(Key key)
         {
             return (keyboardState[key] && (keyboardState[key] != lastKeyboardState[key]));
+        }
+
+        //werkt volgens formule y = ax + b, en c is voor de kleur
+        void drawLine(int a, int b, int c)
+        {
+            // y for xmin (ly) and xmax (ry) for drawing
+            int ly = a * minX + b;
+            int ry = a * maxX + b;
+            int lx = minX, rx = maxX; //left x and right x
+
+            //if's for keeping the line within the frame
+            if (ly < minY)
+            {
+                ly = minY;
+                lx = (ly - b) / a;
+
+            } else if (ly > maxY)
+            {
+                ly = maxY;
+                lx = (ly - b) / a;
+
+            } else if (ry < minY)
+            {
+                ry = minY;
+                rx = (ry - b) / a;
+
+            } else if (ry > maxY)
+            {
+                ry = maxY;
+                rx = (ry - b) / a;
+            }
+
+            screen.Line(TX(lx), TY(ly), TX(rx), TY(ry), c);
+            //print de lijn formule dichtbij het midden vd lijn
+            screen.Print("y = " + a + "x + " + b, TX((lx + rx) / 2), TY((ly + ry) / 2), c);
         }
     }
 
