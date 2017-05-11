@@ -7,9 +7,14 @@ using OpenTK;
 
 namespace template
 {
-    abstract class Primitive
+    class Plane : Primitive
     {
-        //for current stuff, we will change this once we have materials
-        Vector4 color; //uses float values for r, g, b
+        public Vector3 normal;
+        public float distance;
+
+        public Plane()
+        {
+
+        }
     }
 }
