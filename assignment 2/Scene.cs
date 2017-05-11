@@ -11,10 +11,12 @@ namespace template
         List<Primitive> primitives;
         List<Light> lights;
 
-        //intersect loopt over primitives en returnt de meest dichtsbijzijnde
-        void intersect()
+        /*
+        //loop over all primitives and return the closest one
+        Intersection intersect()
         {
-
-        }
+            //loop over all primitives
+            //return closest intersection
+        }*/
     }
 }
