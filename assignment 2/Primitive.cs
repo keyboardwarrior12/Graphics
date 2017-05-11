@@ -10,6 +10,6 @@ namespace template
     abstract class Primitive
     {
         //for current stuff, we will change this once we have materials
-        Vector4 color; //uses float values for r, g, b
+        public Vector4 color; //uses float values for r, g, b
     }
 }
