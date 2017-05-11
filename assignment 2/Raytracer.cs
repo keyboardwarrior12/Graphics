@@ -8,9 +8,9 @@ namespace template
 {
     class Raytracer
     {
-        //Scene scene = new Scene();
-        //Camera camera = new Camera(); 
-        //Surface surface = new Surface(); 
+        Scene scene = new Scene();
+        Camera camera = new Camera();
+        //Display surface
 
         public void Render()
         {

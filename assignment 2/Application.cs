@@ -8,7 +8,12 @@ namespace template
 {
     class Application
     {
-        //Raytracer.Render(); 
+        Raytracer r = new Raytracer();
+        public void Raytracer()
+        {
+            r.Render();
+        }
+            
         
         //Keyboard/Mouse input
     }
