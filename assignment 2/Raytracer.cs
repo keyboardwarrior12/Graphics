@@ -10,14 +10,22 @@ namespace template
 {
     class Raytracer
     {
-        Scene scene = new Scene();
-        Camera camera = new Camera();
-        Surface surface;
+        public Scene scene;
+        public Camera camera;
+        public Surface surface;
         //Display surface
+
+        //we hebben ook debug hier
+        public Debug debug;
 
         public Raytracer()
         {
-            surface = new Surface(50, 50);
+            scene = new Scene();
+            camera = new Camera();
+            surface = new Surface(10, 10);
+
+            //instantiate the debug too
+            debug = new Debug(scene, camera, surface);
         }
 
         public void Render()

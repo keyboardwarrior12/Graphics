@@ -11,5 +11,14 @@ namespace template
     {
         //for current stuff, we will change this once we have materials
         public Vector4 color; //uses float values for r, g, b
+        
+        //sphere
+        public Vector3 pos;
+        public float radius;
+
+        //plane
+        public Vector3 normal;
+        public float distance;
+
     }
 }
