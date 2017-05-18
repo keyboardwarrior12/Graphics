@@ -9,7 +9,7 @@ namespace template
     class Application
     {
         Raytracer r = new Raytracer();
-        public void Raytracer()
+        public Application()
         {
             r.Render();
         }

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using OpenTK;
+using System.Drawing;
 
 namespace template
 {
@@ -14,7 +15,7 @@ namespace template
         Vector3 dir = new Vector3(0, 0, 1);
 
         //for screen plane
-        int lu, ld, ru, rd;
+        Point  ru, rd, ld, lu;
         //l = left, u = up, r = right, d = down
     }
 }

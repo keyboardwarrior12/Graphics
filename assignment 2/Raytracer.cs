@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using OpenTK;
+using Template;
 
 namespace template
 {
@@ -10,7 +12,13 @@ namespace template
     {
         Scene scene = new Scene();
         Camera camera = new Camera();
+        Surface surface;
         //Display surface
+
+        public Raytracer()
+        {
+            surface = new Surface(50, 50);
+        }
 
         public void Render()
         {
