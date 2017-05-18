@@ -23,7 +23,6 @@ class Game
                 drawDebug(raytracer.scene.primitives[i]);
 
             }
-            screen.Line(2, 4, 300, 600, 2000044);
 	}
 
         void drawDebug(Primitive p)
@@ -31,7 +30,8 @@ class Game
             //draw the spheres, do nothing for planes
             if (p is Sphere)
             {
-                raytracer.debug.RenderSphere(p.pos, p.radius);
+                Sphere s = p as Sphere;
+                raytracer.debug.RenderSphere(s.pos, s.radius);
             }
         }
 }

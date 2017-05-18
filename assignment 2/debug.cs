@@ -16,6 +16,8 @@ namespace template
         public Surface surface;
         //Display surface
 
+        int zoom = 1;
+
         public Debug(Scene scene, Camera camera, Surface surface)
         {
             this.scene = scene;
@@ -27,11 +29,13 @@ namespace template
         {
 
             //niet efficient maar werkt voorlopig
-            surface.Line((int)(pos.X + radius), (int)(pos.Z), (int)(pos.X), (int)(pos.Z + radius), 1);
-            surface.Line((int)(pos.X), (int)(pos.Z + radius), (int)(pos.X - radius), (int)(pos.Z), 1);
-            surface.Line((int)(pos.X - radius), (int)(pos.Z), (int)(pos.X), (int)(pos.Z - radius), 1);
-            surface.Line((int)(pos.X), (int)(pos.Z - radius), (int)(pos.X + radius), (int)(pos.Z), 1);
+            surface.Line(TX(pos.X + radius), TY(pos.Z), TX(pos.X), TY(pos.Z + radius), 1);
+            surface.Line(TX(pos.X), TY(pos.Z + radius), TX(pos.X - radius), TY(pos.Z), 1);
+            surface.Line(TX(pos.X - radius), TY(pos.Z), TX(pos.X), TY(pos.Z - radius), 1);
+            surface.Line(TX(pos.X), TY(pos.Z - radius), TX(pos.X + radius), TY(pos.Z), 1);
 
+
+            surface.Line(0, 0, 10, 10, 0xFFFFFF);
             //Loop over the pixel using the camera
             //Generate a ray per pixel
             //Use the ray to find the nearest intersection
@@ -47,5 +51,26 @@ namespace template
         {
 
         }
+
+        //translations
+        private int TX(float x)
+        {
+            x += (2 * zoom);  //offset //centerX = 0 dus niet -0 want dat is wasted psace
+            x *= (surface.width / 4);    //scale
+            x = x / zoom;            //zoom extra
+            return (int)x;
+        }
+
+        private int TY(float y)
+        {
+            y += (2 * zoom);            //offset //normaal - centerY maar die is 0 bij ons
+            y *= (surface.height / 4);            //scale
+            //zoom (higher zoom = zooming out)
+            y /= zoom;
+            //reverse the y
+            y = (surface.height - y);
+            return (int)y;
+        }
+
     }
 }
