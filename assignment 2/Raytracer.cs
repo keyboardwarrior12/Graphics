@@ -13,7 +13,7 @@ namespace template
         public Scene scene;
         public Camera camera;
         public Surface screen; //deze was eerst surfaace
-        public int[,] pixels;
+        public int[] pixels;
         //Display surface
 
         //we hebben ook debug hier
@@ -24,15 +24,31 @@ namespace template
             scene = new Scene();
             camera = new Camera();
             this.screen = screen;
-            pixels = new int[screen.width, screen.height];
             //instantiate the debug too
             debug = new Debug(scene, camera, screen);
+
+            //In de surface class worden alle pixels al opgeslagen
+            pixels = screen.pixels;
         }
 
+        public struct Ray
+        {
+            public float O; //Origin
+            public float D; //Direction
+            public float t; //distance
+        };
 
         public void Render()
         {
-            for (int y = 0; y < height; y++)
+            Ray ray;
+            for (int i = 0; i < pixels.Length; i++)
+            {
+                ray.O = i;
+                //ray.D = ?
+                //ray.t = ? 
+            }
+            //for (every pixel in the camera
+            //Generate a ray per pixel 
         }
     }
 }

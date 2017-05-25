@@ -10,7 +10,6 @@ namespace template
 {
     class Debug
     {
-            
         public Scene scene;
         public Camera camera;
         public Surface surface;

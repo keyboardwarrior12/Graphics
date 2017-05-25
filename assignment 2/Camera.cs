@@ -17,7 +17,10 @@ namespace template
         Vector3 dir = new Vector3(0, 0, 1);
 
         //for screen plane
-        Point  ru, rd, ld, lu;
+        public void Plane(int l, int u, int r, int d)
+        {
+
+        }
         //l = left, u = up, r = right, d = down
     }
 }

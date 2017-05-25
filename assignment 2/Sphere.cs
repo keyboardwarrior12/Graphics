@@ -14,7 +14,6 @@ namespace template
 
         public Sphere()
         {
-
         }
     }
 }
