@@ -27,7 +27,7 @@ namespace template
             Sphere s1 = new Sphere();
             s1.pos = new Vector3(-4, 0, 0);
             s1.radius = 2.0f;
-            s1.color = new Vector4(1, 0, 1, 1);
+            s1.color = new Vector3(1, 0, 1);
             primitives.Add(s1); //voeg de primitive toe aan de lijst
 
             Sphere s2 = new Sphere();

@@ -12,28 +12,27 @@ namespace template
     {
         public Scene scene;
         public Camera camera;
-        public Surface surface;
+        public Surface screen; //deze was eerst surfaace
+        public int[,] pixels;
         //Display surface
 
         //we hebben ook debug hier
         public Debug debug;
 
-        public Raytracer()
+        public Raytracer(Surface screen)
         {
             scene = new Scene();
             camera = new Camera();
-            surface = new Surface(10, 10);
-
+            this.screen = screen;
+            pixels = new int[screen.width, screen.height];
             //instantiate the debug too
-            debug = new Debug(scene, camera, surface);
+            debug = new Debug(scene, camera, screen);
         }
+
 
         public void Render()
         {
-            //Loop over the pixel using the camera
-            //Generate a ray per pixel
-            //Use the ray to find the nearest intersection
-            //Plot the pixels
+            for (int y = 0; y < height; y++)
         }
     }
 }

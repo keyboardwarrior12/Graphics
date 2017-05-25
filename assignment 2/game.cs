@@ -13,7 +13,7 @@ class Game
     //initialize
 	public void Init()
 	{
-        raytracer = new Raytracer();
+        raytracer = new Raytracer(screen);
 	}
 	// tick: renders one frame
 	public void Tick()
