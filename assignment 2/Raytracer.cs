@@ -35,7 +35,8 @@ namespace template
                 {
                     ray = new Ray();
                     ray.Origin = new Vector3(x, y, 0);
-                    ray.Dir = new Vector3(x * screen.width - ray.Origin.X, y * screen.height - ray.Origin.Y, 1);
+                    ray.Dir = new Vector3(ray.Origin.X - camera.pos.X, ray.Origin.Y - camera.pos.Y, ray.Origin.Z - camera.pos.Z);
+                    ray.Dir.Normalize();
                     //Zo'n idee moet het zijn geloof ik 
                 }
             }
