@@ -42,14 +42,18 @@ namespace template
         public void Render()
         {
             Ray ray;
-            for (int i = 0; i < pixels.Length; i++)
+            for (int x = 0; x < screen.width; x++)
             {
-                ray = new Ray();
-                ray.O = new Vector3(i, i * screen.width, 0f);
-                //Zo'n idee moet het zijn geloof ik 
-                //ray.D = ?
+                for (int y = 0; y < screen.height; y++)
+                {
+                    ray = new Ray();
+                    ray.O = new Vector3(x, y, 0);
+                    ray.D = new Vector3(x * screen.width - ray.O.X, y * screen.height - ray.O.Y, 1);
+                    //Zo'n idee moet het zijn geloof ik 
+                    //ray.D = ?
+                }
             }
-            //for (every pixel in the camera
+            //for (every pixel in the camera plane)
             //Generate a ray per pixel 
         }
     }
