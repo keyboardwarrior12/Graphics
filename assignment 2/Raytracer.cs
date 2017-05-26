@@ -28,13 +28,14 @@ namespace template
             debug = new Debug(scene, camera, screen);
 
             //In de surface class worden alle pixels al opgeslagen
+            //Kijk even bij Plot methode in surface
             pixels = screen.pixels;
         }
 
         public struct Ray
         {
-            public float O; //Origin
-            public float D; //Direction
+            public Vector3 O; //Origin
+            public Vector3 D; //Direction
             public float t; //distance
         };
 
@@ -43,9 +44,10 @@ namespace template
             Ray ray;
             for (int i = 0; i < pixels.Length; i++)
             {
-                ray.O = i;
+                ray = new Ray();
+                ray.O = new Vector3(i, i * screen.width, 0f);
+                //Zo'n idee moet het zijn geloof ik 
                 //ray.D = ?
-                //ray.t = ? 
             }
             //for (every pixel in the camera
             //Generate a ray per pixel 
