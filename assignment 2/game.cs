@@ -25,21 +25,31 @@ namespace Template {
 	        // tick: renders one frame
 	        public void Tick()
 	        {
-                    for (int i = 0; i < scene.primitives.Count; i++)
-                    {
-                        drawDebug(scene.primitives[i]);
-                    }
+                //render the scene
+                //raytracer.Render();
+
+                //draw debug
+                for (int i = 0; i < scene.primitives.Count; i++)
+                {
+                    drawDebug(scene.primitives[i]);
+                }
 	        }
 
             void drawDebug(Primitive p)
             {
-
+            //draw cam
             debug.RenderCamera();
-                //draw the spheres, do nothing for planes
-                if (p is Sphere)
+
+            //draw the spheres, do nothing for planes
+            if (p is Sphere)
                 {
                     Sphere s = p as Sphere;
                     debug.RenderSphere(s.pos, s.radius);
+                }
+            else
+                {
+                Plane pl = p as Plane;
+                debug.RenderPlane(pl.distance, pl.color);
                 }
             }
     }

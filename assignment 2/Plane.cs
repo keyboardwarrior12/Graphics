@@ -12,9 +12,9 @@ namespace template
         public Vector3 normal;
         public float distance;
 
-        public Plane()
+        public Plane(float distance)
         {
-
+            this.distance = distance;
         }
     }
 }

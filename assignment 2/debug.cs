@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Template;
+using System.Drawing;
 
 namespace template
 {
@@ -15,7 +16,7 @@ namespace template
         public Surface surface;
         //Display surface
 
-        int zoom = 1;
+        int zoom = 5;
 
         public Debug(Surface surface, Camera camera, Scene scene)
         {
@@ -26,7 +27,6 @@ namespace template
 
         public void RenderSphere(Vector3 pos, float radius)
         {
-
             //niet efficient maar werkt voorlopig
             surface.Line(TX(pos.X + radius), TY(pos.Z), TX(pos.X), TY(pos.Z + radius), 0xFFDDAA);
             surface.Line(TX(pos.X), TY(pos.Z + radius), TX(pos.X - radius), TY(pos.Z), 0xFFDDAA);
@@ -46,7 +46,12 @@ namespace template
 
         public void RenderCamera()
         {
-            surface.Plot(TX(camera.pos.X), TY(camera.pos.Y), 0xFFFFFF);
+            surface.Plot(TX(camera.pos.X), TY(camera.pos.Z), 0xFFFFFF);
+        }
+
+        public void RenderPlane(float distance, Vector3 color)
+        {
+            surface.Line(TX(-3), TY(camera.pos.Z + distance), TX(3), TY(camera.pos.Z + distance), 0xFFFFFF);
         }
 
         //translations
