@@ -13,8 +13,8 @@ namespace template
         //hier moet een methode komen voor alle primary rays
 
         //position, direction
-        Vector3 pos = new Vector3(0, 0, 0);
-        Vector3 dir = new Vector3(0, 0, 1);
+        public Vector3 pos = new Vector3(0, 0, 0);
+        public Vector3 dir = new Vector3(0, 0, 1);
 
         //for screen plane
         public void Plane(int l, int u, int r, int d)

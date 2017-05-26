@@ -13,23 +13,21 @@ namespace template
         public Scene scene;
         public Camera camera;
         public Surface screen; //deze was eerst surfaace
-        public int[] pixels;
+        public int[,] pixels;
         //Display surface
 
         //we hebben ook debug hier
         public Debug debug;
 
-        public Raytracer(Surface screen)
+        public Raytracer(Surface screen, Camera camera, Scene scene)
         {
-            scene = new Scene();
-            camera = new Camera();
             this.screen = screen;
-            //instantiate the debug too
-            debug = new Debug(scene, camera, screen);
+            this.camera = camera;
+            this.scene = scene;
 
             //In de surface class worden alle pixels al opgeslagen
             //Kijk even bij Plot methode in surface
-            pixels = screen.pixels;
+            pixels = new int[screen.width, screen.height];
         }
 
         public struct Ray

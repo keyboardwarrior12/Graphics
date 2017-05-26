@@ -17,7 +17,7 @@ namespace template
 
         int zoom = 1;
 
-        public Debug(Scene scene, Camera camera, Surface surface)
+        public Debug(Surface surface, Camera camera, Scene scene)
         {
             this.scene = scene;
             this.camera = camera;
@@ -28,13 +28,11 @@ namespace template
         {
 
             //niet efficient maar werkt voorlopig
-            surface.Line(TX(pos.X + radius), TY(pos.Z), TX(pos.X), TY(pos.Z + radius), 1);
-            surface.Line(TX(pos.X), TY(pos.Z + radius), TX(pos.X - radius), TY(pos.Z), 1);
-            surface.Line(TX(pos.X - radius), TY(pos.Z), TX(pos.X), TY(pos.Z - radius), 1);
-            surface.Line(TX(pos.X), TY(pos.Z - radius), TX(pos.X + radius), TY(pos.Z), 1);
+            surface.Line(TX(pos.X + radius), TY(pos.Z), TX(pos.X), TY(pos.Z + radius), 0xFFDDAA);
+            surface.Line(TX(pos.X), TY(pos.Z + radius), TX(pos.X - radius), TY(pos.Z), 0xFFDDAA);
+            surface.Line(TX(pos.X - radius), TY(pos.Z), TX(pos.X), TY(pos.Z - radius), 0xFFDDAA);
+            surface.Line(TX(pos.X), TY(pos.Z - radius), TX(pos.X + radius), TY(pos.Z), 0xFFDDAA);
 
-
-            surface.Line(0, 0, 10, 10, 0xFFFFFF);
             //Loop over the pixel using the camera
             //Generate a ray per pixel
             //Use the ray to find the nearest intersection
@@ -48,7 +46,7 @@ namespace template
 
         public void RenderCamera()
         {
-
+            surface.Plot(TX(camera.pos.X), TY(camera.pos.Y), 0xFFFFFF);
         }
 
         //translations
