@@ -53,5 +53,4 @@ namespace Template {
                 }
             }
     }
-
 } // namespace Template
