@@ -76,10 +76,8 @@ namespace template
                     //if there actually is an intersection
                     if (Intersections[x,y] != null)
                     {
-                        if (y == 0 / 2 && (x & 63) == 0)
-                        {
+                        //if (y == 0 / 2 && (x & 63) == 0){
                             debug.RenderRay(ray, Intersections[x, y]);
-                        }
                     }
 
                     //createshadowRay(ray)
