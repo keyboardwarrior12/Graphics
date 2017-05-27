@@ -16,5 +16,11 @@ namespace template
         {
             this.distance = distance;
         }
+
+        public void intersectPlane(Ray ray)
+        {
+            ray.Distance = -(ray.Origin * normal + distance) / (ray.Dir * normal);
+             = ray.Origin + ray.Distance * ray.Dir;
+        }
     }
 }

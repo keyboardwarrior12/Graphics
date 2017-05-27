@@ -15,5 +15,26 @@ namespace template
         public Sphere()
         {
         }
+
+        public void intersectSphere(Ray ray)
+        {
+            //note: this only works for rays that start outside the sphere
+            Vector3 c = pos - ray.Origin;
+            float distanceTravelled = Vector3.Dot(c, ray.Dir);
+            Vector3 q = c - distanceTravelled * ray.Dir;
+            float pSquare = Vector3.Dot(q, q);
+
+            if (pSquare > (radius * radius))
+            {
+                return;
+            }
+
+            distanceTravelled -= (float)Math.Sqrt((radius * radius) - pSquare);
+
+            if ((distanceTravelled < ray.Distance) && (distanceTravelled > 0))
+            {
+                ray.Distance = distanceTravelled;
+            }
+        }
     }
 }
