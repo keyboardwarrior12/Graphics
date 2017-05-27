@@ -25,8 +25,7 @@ namespace template
         public Surface screen; //deze was eerst surfaace
         public Debug debug;
         public int[,] pixels;
-        public List<Intersection> Intersections;
-        public Intersection[,] earliestIntersections;
+        public Intersection[,] Intersections;
 
         public Raytracer(Surface screen, Camera camera, Scene scene, Debug debug)
         {
@@ -38,8 +37,7 @@ namespace template
             //In de surface class worden alle pixels al opgeslagen
             //Kijk even bij Plot methode in surface
             pixels = new int[screen.width, screen.height];
-            Intersections = new List<Intersection>();
-            earliestIntersections = new Intersection[screen.width / 2, screen.height];
+            Intersections = new Intersection[screen.width / 2, screen.height];
         }
 
         public void Render()
@@ -65,26 +63,25 @@ namespace template
                     foreach (Primitive p in scene.primitives)
                     {
                         p.intersect(ray);
-                        Intersections.Add(new Intersection(ray.Distance, p));
-                    }
-
-                    //filter out the smallest intersection, 
-                    //and clear the list for the next iteration of the loop
-                    Intersection smallest = Intersections[0];
-                    foreach(Intersection i in Intersections)
-                    {
-                        if ((i.Distance < smallest.Distance) && (i.Distance > 0))
+                        if (ray.Distance > 0)
                         {
-                            smallest = i;
+                            //filter out the smallest intersection, 
+                            if (Intersections[x, y] == null || Intersections[x,y].Distance < ray.Distance)
+                            {
+                                Intersections[x, y] = new Intersection(ray.Distance, p);
+                            }
                         }
                     }
-                    
-                    earliestIntersections[x, y] = new Intersection(smallest.Distance, smallest.Primitive);
 
-                    if (y == 0 / 2 && (x & 63) == 0 && smallest.Distance > 0) {
-                    debug.RenderRay(ray, smallest);
+                    //if there actually is an intersection
+                    if (Intersections[x,y] != null)
+                    {
+                        if (y == 0 / 2 && (x & 63) == 0)
+                        {
+                            debug.RenderRay(ray, Intersections[x, y]);
+                        }
                     }
-                    Intersections.Clear();
+
                     //createshadowRay(ray)
                 }
             }
