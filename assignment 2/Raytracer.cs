@@ -47,19 +47,19 @@ namespace template
             //for (every pixel in the camera plane), find the color
             //reuse the same ray
             Ray ray;
-            for (float x = -2; x < 2 / 2; x+= 4/((float)screen.width/2)) //screen width = 512, maar client width = 1024 (want debug scherm rechts)
+            for (int x = 0; x < 512; x++) //screen width = 512, maar client width = 1024 (want debug scherm rechts)
             {
-                for (float y = -2; y < 2; y+= 4/((float)screen.height))
+                for (int y = 0; y < 512; y++)
                 {
                     //add the z calculations here once we have a working rotating camera
-                    Vector3 screenpoint = new Vector3(4/ ((float)screen.width / 2) * x, 
-                        4/ ((float)screen.height) * y , 0);
+                    Vector3 screenpoint = new Vector3(4 * (x/(screen.width/2)) - 2f, 
+                        4 * (y/screen.height) - 2f , 1);
 
                     ray = new Ray();
                     ray.Origin = camera.pos;
                     ray.Dir = screenpoint - ray.Origin;
                     ray.Dir.Normalize();
-                    //normaliseer de ray voor ease
+                    //normaliseer ray for ease
 
                     //loop through primitives list for each ray, detect earliest collision
                     for (int i = 0; i < scene.primitives.Count; i++)
@@ -80,14 +80,14 @@ namespace template
                         }
                     }
                     Intersections.Clear();
-                    /*
+                    
                     earliestIntersections[x, y] = new Intersection(smallest.Distance, smallest.Primitive);
 
-                    if (y == screen.height / 2 && (x & 63) == 0)
-                    {
-                        debug.RenderRay(ray, smallest);
+                    if (y == 0 / 2 && (x & 63) == 0) { 
+                    debug.RenderRay(ray, smallest);
                     }
-                    //createshadowRay(ray)*/
+
+                    //createshadowRay(ray)
                 }
             }
             debug.Render();
