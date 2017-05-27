@@ -10,6 +10,6 @@ namespace template
     class Light
     {
         Vector3 intensity; //float values for r, g, b
-        Vector3 loc;
+        Vector3 pos;
     }
 }

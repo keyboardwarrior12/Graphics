@@ -10,47 +10,25 @@ namespace Template {
         public Raytracer raytracer;
         public Debug debug;
         public Surface screen;
+        public Surface debugScreen;
         public Scene scene;
         public Camera camera;
 
             //initialize
 	        public void Init()
 	        {
+                screen = new Surface(1024, 512);
                 camera = new Camera();
                 scene = new Scene();
                 camera = new Camera();
-                raytracer = new Raytracer(screen, camera, scene);
                 debug = new Debug(screen, camera, scene);
+                raytracer = new Raytracer(screen, camera, scene, debug);
 	        }
 	        // tick: renders one frame
 	        public void Tick()
 	        {
-                //render the scene
-                //raytracer.Render();
-
-                //draw debug
-                for (int i = 0; i < scene.primitives.Count; i++)
-                {
-                    drawDebug(scene.primitives[i]);
-                }
+                //render the scene, debug is also rendered (called from within raytracer.render)
+                raytracer.Render();
 	        }
-
-            void drawDebug(Primitive p)
-            {
-            //draw cam
-            debug.RenderCamera();
-
-            //draw the spheres, do nothing for planes
-            if (p is Sphere)
-                {
-                    Sphere s = p as Sphere;
-                    debug.RenderSphere(s.pos, s.radius);
-                }
-            else
-                {
-                Plane pl = p as Plane;
-                debug.RenderPlane(pl.distance, pl.color);
-                }
-            }
     }
 } // namespace Template

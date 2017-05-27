@@ -25,18 +25,52 @@ namespace template
             this.surface = surface;
         }
 
+        public void Render()
+        {
+            RenderCamera();
+
+            for (int i = 0; i < scene.primitives.Count; i++)
+            {
+                RenderPrimitive(scene.primitives[i]);
+            }
+        }
+
+        public void RenderPrimitive(Primitive p)
+        {
+            //draw the spheres, do nothing for planes
+            if (p is Sphere)
+            {
+                Sphere s = p as Sphere;
+                RenderSphere(s.pos, s.radius);
+            }
+            else
+            {
+                Plane pl = p as Plane;
+                RenderPlane(pl.distance, pl.color);
+            }
+        }
+
         public void RenderSphere(Vector3 pos, float radius)
         {
+            /*
             //niet efficient maar werkt voorlopig
             surface.Line(TX(pos.X + radius), TY(pos.Z), TX(pos.X), TY(pos.Z + radius), 0xFFDDAA);
             surface.Line(TX(pos.X), TY(pos.Z + radius), TX(pos.X - radius), TY(pos.Z), 0xFFDDAA);
             surface.Line(TX(pos.X - radius), TY(pos.Z), TX(pos.X), TY(pos.Z - radius), 0xFFDDAA);
             surface.Line(TX(pos.X), TY(pos.Z - radius), TX(pos.X + radius), TY(pos.Z), 0xFFDDAA);
+            */
+            float x1, x2, z1, z2;
+            
+            //draw 90 lines for each circle
+            for (int i = 0; i < 360; i+=4)
+            {
+                x1 = (float)(pos.X + radius * Math.Cos(i * Math.PI / 180));
+                z1 = (float)(pos.Z + radius * Math.Sin(i * Math.PI / 180));
+                x2 = (float)(pos.X + radius * Math.Cos((i + 4) * Math.PI / 180));
+                z2 = (float)(pos.Z + radius * Math.Sin((i + 4) * Math.PI / 180));
 
-            //Loop over the pixel using the camera
-            //Generate a ray per pixel
-            //Use the ray to find the nearest intersection
-            //Plot the pixels
+                surface.Line(TX(x1), TY(z1), TX(x2), TY(z2), 0xFFDDaa);
+            }
         }
 
         public void RenderLight()

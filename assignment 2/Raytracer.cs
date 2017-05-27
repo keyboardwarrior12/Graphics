@@ -23,13 +23,15 @@ namespace template
         public Scene scene;
         public Camera camera;
         public Surface screen; //deze was eerst surfaace
+        public Debug debug;
         public int[,] pixels;
 
-        public Raytracer(Surface screen, Camera camera, Scene scene)
+        public Raytracer(Surface screen, Camera camera, Scene scene, Debug debug)
         {
             this.screen = screen;
             this.camera = camera;
             this.scene = scene;
+            this.debug = debug;
 
             //In de surface class worden alle pixels al opgeslagen
             //Kijk even bij Plot methode in surface
@@ -52,6 +54,8 @@ namespace template
                     intersect(ray);
                 }
             }
+
+            debug.Render();
         }
 
         void intersect(Ray ray)
@@ -64,12 +68,21 @@ namespace template
                 if (p is Sphere)
                 {
                     Sphere s = p as Sphere;
+                    s.intersectSphere(ray);
                 }
                 else
                 {
                     Plane pl = p as Plane;
+                    pl.intersectPlane(ray);
                 }
+                //createShadowRay(ray);
             }
+        }
+
+        //Vector3 I = intersection point on the sphere/plane
+        void createShadowRay(Ray ray, Vector3 I)
+        {
+            
         }
     }
 }
