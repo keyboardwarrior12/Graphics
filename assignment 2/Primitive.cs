@@ -11,5 +11,7 @@ namespace template
     {
         //for current stuff, we will change this once we have materials
         public Vector3 color; //uses float values for r, g, b
+
+        public abstract void intersect(Ray ray);
     }
 }

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using OpenTK;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,10 +9,8 @@ namespace template
 {
     class Intersection
     {
-        //List with results of intersections and nearest primitives. 
-        //distance, primitive, normal
-        public List<Tuple<float, Primitive, float>> Intersections = new List<Tuple<float, Primitive, float>>();
-        /*
-         */ 
+        public float distance;
+        public Primitive closestPrim;
+        public Vector3 normal;
     }
 }

@@ -16,7 +16,7 @@ namespace template
         {
         }
 
-        public void intersectSphere(Ray ray)
+        public override void intersect(Ray ray)
         {
             //note: this only works for rays that start outside the sphere
             Vector3 c = pos - ray.Origin;

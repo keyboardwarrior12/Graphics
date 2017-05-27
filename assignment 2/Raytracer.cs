@@ -25,6 +25,7 @@ namespace template
         public Surface screen; //deze was eerst surfaace
         public Debug debug;
         public int[,] pixels;
+        public List<Intersection> Intersections;
 
         public Raytracer(Surface screen, Camera camera, Scene scene, Debug debug)
         {
@@ -36,6 +37,7 @@ namespace template
             //In de surface class worden alle pixels al opgeslagen
             //Kijk even bij Plot methode in surface
             pixels = new int[screen.width, screen.height];
+            Intersections = new List<Intersection>();
         }
 
         public void Render()
@@ -51,31 +53,24 @@ namespace template
                     ray.Origin = new Vector3(x, y, 0);
                     ray.Dir = new Vector3(ray.Origin.X - camera.pos.X, ray.Origin.Y - camera.pos.Y, ray.Origin.Z - camera.pos.Z);
                     ray.Dir.Normalize();
-                    intersect(ray);
+                    //sla de ray op in onze rays lijst
+
+                    handlePrimaryRay(ray);
+                    
+
+                    //createshadowRay(ray)
                 }
             }
-
             debug.Render();
         }
 
-        void intersect(Ray ray)
+        private void handlePrimaryRay(Ray ray)
         {
             //loop through primitives list for each ray, detect earliest collision
             for (int i = 0; i < scene.primitives.Count; i++)
             {
                 Primitive p = scene.primitives[i];
-                //formulas of the lectures will be here
-                if (p is Sphere)
-                {
-                    Sphere s = p as Sphere;
-                    s.intersectSphere(ray);
-                }
-                else
-                {
-                    Plane pl = p as Plane;
-                    pl.intersectPlane(ray);
-                }
-                //createShadowRay(ray);
+                p.intersect(ray);
             }
         }
 

@@ -17,11 +17,10 @@ namespace template
             this.distance = distance;
         }
 
-        public void intersectPlane(Ray ray)
+        public override void intersect(Ray ray)
         {
-            /*
-            ray.Distance = -(ray.Origin * normal + distance) / (ray.Dir * normal);
-             = ray.Origin + ray.Distance * ray.Dir;*/
+            ray.Distance = -(Vector3.Dot(ray.Origin, normal) + distance) / Vector3.Dot(ray.Dir, normal);
+            Vector3 intersectionpoint = ray.Origin + ray.Distance * ray.Dir;
         }
     }
 }
