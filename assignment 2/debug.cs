@@ -16,6 +16,8 @@ namespace template
         public Surface surface;
         //Display surface
 
+        float planewidth = 4;
+
         int zoom = 5;
 
         public Debug(Surface surface, Camera camera, Scene scene)
@@ -23,11 +25,14 @@ namespace template
             this.scene = scene;
             this.camera = camera;
             this.surface = surface;
+
+            int x = surface.width;
         }
 
         public void Render()
         {
             RenderCamera();
+            RenderScreenPlane(camera.screenlu, camera.screenru);
 
             for (int i = 0; i < scene.primitives.Count; i++)
             {
@@ -45,8 +50,8 @@ namespace template
             }
             else
             {
-                Plane pl = p as Plane;
-                RenderPlane(pl.distance, pl.color);
+                /*Plane pl = p as Plane;
+                RenderPlane(pl.distance, pl.color);*/
             }
         }
 
@@ -79,6 +84,11 @@ namespace template
                 TY(ray.Origin.Z + (intersectionpoint).Z), 0xFFFF00);
         }
 
+        public void RenderScreenPlane(Vector3 lu, Vector3 ru)
+        {
+            surface.Line(TX(lu.X), TY(lu.Z), TX(ru.X), TY(ru.Z), 0xFFFFFF);
+        }
+
         public void RenderCamera()
         {
             surface.Plot(TX(camera.pos.X), TY(camera.pos.Z), 0xFFFFFF);
@@ -86,23 +96,23 @@ namespace template
 
         public void RenderPlane(float distance, Vector3 color)
         {
-            surface.Line(TX(-3), TY(camera.pos.Z + distance), TX(3), TY(camera.pos.Z + distance), 0xFFFFFF);
+            surface.Line(TX(-2), TY(camera.pos.Z + distance), TX(2), TY(camera.pos.Z + distance), 0xFFFFFF);
         }
 
         //translations
-        private int TX(float x)
+        public int TX(float x)
         {
-            x += (2 * zoom);  //offset //centerX = 0 dus niet -0 want dat is wasted psace
-            x *= (512 / 4);   //scale (512 = screen.width(debugscreen))
+            x += ((planewidth/2) * zoom);  //offset //centerX = 0 dus niet -0 want dat is wasted psace
+            x *= (512 / planewidth);   //scale (512 = screen.width(debugscreen))
             x = x / zoom;     //zoom extra
             x += 512;
             return (int)x;
         }
 
-        private int TY(float y)
+        public int TY(float y)
         {
-            y += (2 * zoom);            //offset, normaal - centerY maar die is 0 bij ons
-            y *= (surface.height / 4);            //scale
+            y += ((planewidth/2) * zoom);            //offset, normaal - centerY maar die is 0 bij ons
+            y *= (surface.height / planewidth);            //scale
             //zoom (higher zoom = zooming out)
             y /= zoom;
             //reverse the y

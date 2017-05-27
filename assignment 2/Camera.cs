@@ -16,11 +16,16 @@ namespace template
         public Vector3 pos = new Vector3(0, 0, -6);
         public Vector3 dir = new Vector3(0, 0, 1);
 
-        //for screen plane
-        public void Plane(int l, int u, int r, int d)
-        {
+        public Vector3 screenlu; //left up
+        public Vector3 screenld; //left down
+        public Vector3 screenru; //right up
 
+        //for screen plane
+        public Camera()
+        {
+            screenlu = new Vector3(-2, 2, 0);
+            screenld = new Vector3(-2, -2, 0);
+            screenru = new Vector3(2, 2, 0);
         }
-        //l = left, u = up, r = right, d = down
     }
 }

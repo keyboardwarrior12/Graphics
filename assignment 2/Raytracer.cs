@@ -47,15 +47,19 @@ namespace template
             //for (every pixel in the camera plane), find the color
             //reuse the same ray
             Ray ray;
-            for (int x = 0; x < 512; x++) //screen width = 512, maar client width = 1024 dus hardcode hier
+            for (float x = -2; x < 2 / 2; x+= 4/((float)screen.width/2)) //screen width = 512, maar client width = 1024 (want debug scherm rechts)
             {
-                for (int y = 0; y < screen.height; y++)
+                for (float y = -2; y < 2; y+= 4/((float)screen.height))
                 {
+                    //add the z calculations here once we have a working rotating camera
+                    Vector3 screenpoint = new Vector3(4/ ((float)screen.width / 2) * x, 
+                        4/ ((float)screen.height) * y , 0);
+
                     ray = new Ray();
                     ray.Origin = camera.pos;
-                    ray.Dir = new Vector3(x, y, 0);
+                    ray.Dir = screenpoint - ray.Origin;
                     ray.Dir.Normalize();
-                    //sla de ray op in onze rays lijst
+                    //normaliseer de ray voor ease
 
                     //loop through primitives list for each ray, detect earliest collision
                     for (int i = 0; i < scene.primitives.Count; i++)
@@ -76,14 +80,14 @@ namespace template
                         }
                     }
                     Intersections.Clear();
-
+                    /*
                     earliestIntersections[x, y] = new Intersection(smallest.Distance, smallest.Primitive);
 
-                    if ((x % 64 == 0) && (y % 64 == 0))
+                    if (y == screen.height / 2 && (x & 63) == 0)
                     {
                         debug.RenderRay(ray, smallest);
                     }
-                    //createshadowRay(ray)
+                    //createshadowRay(ray)*/
                 }
             }
             debug.Render();

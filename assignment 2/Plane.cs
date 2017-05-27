@@ -12,9 +12,11 @@ namespace template
         public Vector3 normal;
         public float distance;
 
-        public Plane(float distance)
+        public Plane(float distance, Vector3 normal, Vector3 color)
         {
             this.distance = distance;
+            this.normal = normal;
+            this.color = color;
         }
 
         public override void intersect(Ray ray)
