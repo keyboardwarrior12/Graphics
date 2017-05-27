@@ -9,8 +9,15 @@ namespace template
 {
     class Intersection
     {
-        public float distance;
-        public Primitive closestPrim;
-        public Vector3 normal;
+        public float Distance;
+        public Primitive Primitive;
+        //public Vector3 normal;
+
+        public Intersection(float distance, Primitive primitive/*, Vector3 normal*/)
+        {
+            this.Distance = distance;
+            this.Primitive = primitive;
+            //this.normal = normal;
+        }
     }
 }

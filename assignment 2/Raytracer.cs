@@ -26,6 +26,7 @@ namespace template
         public Debug debug;
         public int[,] pixels;
         public List<Intersection> Intersections;
+        public Intersection[,] earliestIntersections;
 
         public Raytracer(Surface screen, Camera camera, Scene scene, Debug debug)
         {
@@ -38,6 +39,7 @@ namespace template
             //Kijk even bij Plot methode in surface
             pixels = new int[screen.width, screen.height];
             Intersections = new List<Intersection>();
+            earliestIntersections = new Intersection[screen.width, screen.height];
         }
 
         public void Render()
@@ -55,23 +57,31 @@ namespace template
                     ray.Dir.Normalize();
                     //sla de ray op in onze rays lijst
 
-                    handlePrimaryRay(ray);
-                    
+                    //loop through primitives list for each ray, detect earliest collision
+                    for (int i = 0; i < scene.primitives.Count; i++)
+                    {
+                        Primitive p = scene.primitives[i];
+                        p.intersect(ray);
+                        Intersections.Add(new Intersection(ray.Distance, p));
+                    }
 
+                    //filter out the smallest intersection, 
+                    //and clear the list for the next iteration of the loop
+                    Intersection smallest = Intersections[0];
+                    for (int k = 1; k < Intersections.Count; k++)
+                    {
+                        if (Intersections[k].Distance < smallest.Distance)
+                        {
+                            smallest = Intersections[k];
+                        }
+                    }
+                    Intersections.Clear();
+
+                    earliestIntersections[x, y] = new Intersection(smallest.Distance, smallest.Primitive);
                     //createshadowRay(ray)
                 }
             }
             debug.Render();
-        }
-
-        private void handlePrimaryRay(Ray ray)
-        {
-            //loop through primitives list for each ray, detect earliest collision
-            for (int i = 0; i < scene.primitives.Count; i++)
-            {
-                Primitive p = scene.primitives[i];
-                p.intersect(ray);
-            }
         }
 
         //Vector3 I = intersection point on the sphere/plane
