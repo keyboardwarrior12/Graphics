@@ -19,9 +19,7 @@ namespace template
             lights = new List<Light>();
 
             //create plane
-            Plane p = new Plane(4, new Vector3(0, 0, 0), new Vector3(1, 1, 1));
-            //p.color = new Vector3(....);
-            //idk wat ik nog moet toevoegen aan plane
+            Plane p = new Plane(8, new Vector3(0, 1, 0), new Vector3(1, 1, 1));
             primitives.Add(p);
             
             //create spheres

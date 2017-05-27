@@ -39,7 +39,7 @@ namespace template
             //Kijk even bij Plot methode in surface
             pixels = new int[screen.width, screen.height];
             Intersections = new List<Intersection>();
-            earliestIntersections = new Intersection[screen.width, screen.height];
+            earliestIntersections = new Intersection[screen.width / 2, screen.height];
         }
 
         public void Render()
@@ -58,13 +58,12 @@ namespace template
                     ray = new Ray();
                     ray.Origin = camera.pos;
                     ray.Dir = screenpoint - ray.Origin;
-                    ray.Dir.Normalize();
+                    ray.Dir *= 100000000; //make the ray length epicly high
                     //normaliseer ray for ease
 
                     //loop through primitives list for each ray, detect earliest collision
-                    for (int i = 0; i < scene.primitives.Count; i++)
+                    foreach (Primitive p in scene.primitives)
                     {
-                        Primitive p = scene.primitives[i];
                         p.intersect(ray);
                         Intersections.Add(new Intersection(ray.Distance, p));
                     }
@@ -72,21 +71,20 @@ namespace template
                     //filter out the smallest intersection, 
                     //and clear the list for the next iteration of the loop
                     Intersection smallest = Intersections[0];
-                    for (int k = 1; k < Intersections.Count; k++)
+                    foreach(Intersection i in Intersections)
                     {
-                        if (Intersections[k].Distance < smallest.Distance)
+                        if ((i.Distance < smallest.Distance) && (i.Distance > 0))
                         {
-                            smallest = Intersections[k];
+                            smallest = i;
                         }
                     }
-                    Intersections.Clear();
                     
                     earliestIntersections[x, y] = new Intersection(smallest.Distance, smallest.Primitive);
 
-                    if (y == 0 / 2 && (x & 63) == 0) { 
+                    if (y == 0 / 2 && (x & 63) == 0 && smallest.Distance > 0) {
                     debug.RenderRay(ray, smallest);
                     }
-
+                    Intersections.Clear();
                     //createshadowRay(ray)
                 }
             }

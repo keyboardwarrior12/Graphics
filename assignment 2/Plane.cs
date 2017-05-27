@@ -10,7 +10,7 @@ namespace template
     class Plane : Primitive
     {
         public Vector3 normal;
-        public float distance;
+        public float distance; //distance to the plane origin
 
         public Plane(float distance, Vector3 normal, Vector3 color)
         {

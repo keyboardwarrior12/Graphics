@@ -15,8 +15,8 @@ namespace template
 
         public Intersection(float distance, Primitive primitive/*, Vector3 normal*/)
         {
-            this.Distance = distance;
-            this.Primitive = primitive;
+            Distance = distance;
+            Primitive = primitive;
             //this.normal = normal;
         }
     }
