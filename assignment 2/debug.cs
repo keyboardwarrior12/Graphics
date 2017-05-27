@@ -41,7 +41,7 @@ namespace template
             if (p is Sphere)
             {
                 Sphere s = p as Sphere;
-                RenderSphere(s.pos, s.radius);
+                RenderSphere(s.pos, s.radius, p);
             }
             else
             {
@@ -50,15 +50,8 @@ namespace template
             }
         }
 
-        public void RenderSphere(Vector3 pos, float radius)
+        public void RenderSphere(Vector3 pos, float radius, Primitive p)
         {
-            /*
-            //niet efficient maar werkt voorlopig
-            surface.Line(TX(pos.X + radius), TY(pos.Z), TX(pos.X), TY(pos.Z + radius), 0xFFDDAA);
-            surface.Line(TX(pos.X), TY(pos.Z + radius), TX(pos.X - radius), TY(pos.Z), 0xFFDDAA);
-            surface.Line(TX(pos.X - radius), TY(pos.Z), TX(pos.X), TY(pos.Z - radius), 0xFFDDAA);
-            surface.Line(TX(pos.X), TY(pos.Z - radius), TX(pos.X + radius), TY(pos.Z), 0xFFDDAA);
-            */
             float x1, x2, z1, z2;
             
             //draw 90 lines for each circle
@@ -69,13 +62,21 @@ namespace template
                 x2 = (float)(pos.X + radius * Math.Cos((i + 4) * Math.PI / 180));
                 z2 = (float)(pos.Z + radius * Math.Sin((i + 4) * Math.PI / 180));
 
-                surface.Line(TX(x1), TY(z1), TX(x2), TY(z2), 0xFFDDaa);
+                surface.Line(TX(x1), TY(z1), TX(x2), TY(z2), createColor(p.color));
             }
         }
 
         public void RenderLight()
         {
 
+        }
+
+        public void RenderRay(Ray ray, Intersection intersection)
+        {
+            Vector3 intersectionpoint = intersection.Distance * ray.Dir;
+            surface.Line(TX(ray.Origin.X), TY(ray.Origin.Z), 
+                TX(ray.Origin.X + (intersectionpoint).X), 
+                TY(ray.Origin.Z + (intersectionpoint).Z), 0xFFFF00);
         }
 
         public void RenderCamera()
@@ -92,15 +93,15 @@ namespace template
         private int TX(float x)
         {
             x += (2 * zoom);  //offset //centerX = 0 dus niet -0 want dat is wasted psace
-            x *= (512 / 4);    //scale (512 = screen.width(debugscreen))
-            x = x / zoom;            //zoom extra
+            x *= (512 / 4);   //scale (512 = screen.width(debugscreen))
+            x = x / zoom;     //zoom extra
             x += 512;
             return (int)x;
         }
 
         private int TY(float y)
         {
-            y += (2 * zoom);            //offset //normaal - centerY maar die is 0 bij ons
+            y += (2 * zoom);            //offset, normaal - centerY maar die is 0 bij ons
             y *= (surface.height / 4);            //scale
             //zoom (higher zoom = zooming out)
             y /= zoom;
@@ -109,5 +110,13 @@ namespace template
             return (int)y;
         }
 
+        //createColor (with bitshifting)
+        private int createColor(Vector3 v)
+        {
+            int x = (int)(v.X * 255);
+            int y = (int)(v.Y * 255);
+            int z = (int)(v.Z * 255);
+            return (x << 16) + (y << 8) + (z);
+        }
     }
 }

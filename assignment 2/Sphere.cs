@@ -12,8 +12,12 @@ namespace template
         public Vector3 pos;
         public float radius;
 
-        public Sphere()
+        public Sphere(Vector3 pos, float radius, Vector3 color)
         {
+            this.pos = pos;
+            this.radius = radius;
+            this.color = color;
+            this.color = color.Normalized();
         }
 
         public override void intersect(Ray ray)

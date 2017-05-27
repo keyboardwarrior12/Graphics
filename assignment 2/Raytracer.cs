@@ -47,13 +47,13 @@ namespace template
             //for (every pixel in the camera plane), find the color
             //reuse the same ray
             Ray ray;
-            for (int x = 0; x < screen.width; x++)
+            for (int x = 0; x < 512; x++) //screen width = 512, maar client width = 1024 dus hardcode hier
             {
                 for (int y = 0; y < screen.height; y++)
                 {
                     ray = new Ray();
-                    ray.Origin = new Vector3(x, y, 0);
-                    ray.Dir = new Vector3(ray.Origin.X - camera.pos.X, ray.Origin.Y - camera.pos.Y, ray.Origin.Z - camera.pos.Z);
+                    ray.Origin = camera.pos;
+                    ray.Dir = new Vector3(x, y, 0);
                     ray.Dir.Normalize();
                     //sla de ray op in onze rays lijst
 
@@ -78,6 +78,11 @@ namespace template
                     Intersections.Clear();
 
                     earliestIntersections[x, y] = new Intersection(smallest.Distance, smallest.Primitive);
+
+                    if ((x % 64 == 0) && (y % 64 == 0))
+                    {
+                        debug.RenderRay(ray, smallest);
+                    }
                     //createshadowRay(ray)
                 }
             }

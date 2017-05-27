@@ -26,21 +26,13 @@ namespace template
 
             
             //create spheres
-            Sphere s1 = new Sphere();
-            s1.pos = new Vector3(-4, 0, 4);
-            s1.radius = 2.0f;
-            //s1.color = new Vector3(1, 0, 5);
+            Sphere s1 = new Sphere(new Vector3(-4, 0, 4), 2.0f, new Vector3(255, 255, 255));
             primitives.Add(s1); //voeg de primitive toe aan de lijst
 
-            Sphere s2 = new Sphere();
-            s2.pos = new Vector3(0, 0, 5);
-            s2.radius = 2.0f;
-            //ff aan 2 en 3 geen kleur toevoegen als test wat er gebeurt
+            Sphere s2 = new Sphere(new Vector3(0, 0, 5), 2.0f, new Vector3(244, 140, 150));
             primitives.Add(s2);
 
-            Sphere s3 = new Sphere();
-            s3.pos = new Vector3(4, 0, 4);
-            s3.radius = 2.0f;
+            Sphere s3 = new Sphere(new Vector3(4, 0, 4), 2.0f, new Vector3(100, 0, 0));
             primitives.Add(s3);
         }
         /*
