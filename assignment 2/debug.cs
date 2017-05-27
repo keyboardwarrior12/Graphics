@@ -92,8 +92,9 @@ namespace template
         private int TX(float x)
         {
             x += (2 * zoom);  //offset //centerX = 0 dus niet -0 want dat is wasted psace
-            x *= (surface.width / 4);    //scale
+            x *= (512 / 4);    //scale (512 = screen.width(debugscreen))
             x = x / zoom;            //zoom extra
+            x += 512;
             return (int)x;
         }
 

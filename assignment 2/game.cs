@@ -10,7 +10,6 @@ namespace Template {
         public Raytracer raytracer;
         public Debug debug;
         public Surface screen;
-        public Surface debugScreen;
         public Scene scene;
         public Camera camera;
 
