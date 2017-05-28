@@ -20,7 +20,7 @@ namespace template
             this.color = color.Normalized();
         }
 
-        public override void intersect(Ray ray)
+        public override Intersection intersect(Ray ray)
         {
             //note: this only works for rays that start outside the sphere
             Vector3 c = pos - ray.Origin;
@@ -30,7 +30,7 @@ namespace template
 
             if (pSquare > (radius * radius))
             {
-                return;
+                return null;
             }
 
             distanceTravelled -= (float)Math.Sqrt((radius * radius) - pSquare);
@@ -39,6 +39,8 @@ namespace template
             {
                 ray.Distance = distanceTravelled;
             }
+
+            return new Intersection(distanceTravelled, this);
         }
     }
 }

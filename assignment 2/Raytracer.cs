@@ -55,20 +55,19 @@ namespace template
 
                     ray = new Ray();
                     ray.Origin = camera.pos;
-                    ray.Dir = screenpoint - ray.Origin;
-                    ray.Dir *= 100000000; //make the ray length epicly high
+                    ray.Dir = (screenpoint - ray.Origin).Normalized();
                     //normaliseer ray for ease
 
                     //loop through primitives list for each ray, detect earliest collision
                     foreach (Primitive p in scene.primitives)
                     {
-                        p.intersect(ray);
-                        if (ray.Distance > 0)
+                        Intersection i = p.intersect(ray);
+                        if (i != null)
                         {
                             //filter out the smallest intersection, 
-                            if (Intersections[x, y] == null || Intersections[x,y].Distance < ray.Distance)
+                            if (Intersections[x, y] == null || Intersections[x,y].Distance < i.Distance)
                             {
-                                Intersections[x, y] = new Intersection(ray.Distance, p);
+                                Intersections[x, y] = i;
                             }
                         }
                     }

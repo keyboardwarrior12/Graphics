@@ -19,10 +19,11 @@ namespace template
             this.color = color;
         }
 
-        public override void intersect(Ray ray)
+        public override Intersection intersect(Ray ray)
         {
             ray.Distance = -(Vector3.Dot(ray.Origin, normal) + distance) / Vector3.Dot(ray.Dir, normal);
-            Vector3 intersectionpoint = ray.Origin + ray.Distance * ray.Dir;
+            //Vector3 intersectionpoint = ray.Origin + ray.Distance * ray.Dir;
+            return new Intersection(ray.Distance, this);
         }
     }
 }

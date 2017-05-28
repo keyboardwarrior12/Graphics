@@ -78,10 +78,10 @@ namespace template
 
         public void RenderRay(Ray ray, Intersection intersection)
         {
-            Vector3 intersectionpoint =  intersection.Distance * ray.Dir;
+            Vector3 intersectionpoint =  ray.Origin + (intersection.Distance * ray.Dir);
             surface.Line(TX(ray.Origin.X), TY(ray.Origin.Z), 
-                TX(ray.Origin.X + (intersectionpoint).X), 
-                TY(ray.Origin.Z + (intersectionpoint).Z), 0xFFFF00);
+                TX(intersectionpoint.X), 
+                TY(intersectionpoint.Z), 0xFFFF00);
         }
 
         public void RenderScreenPlane(Vector3 lu, Vector3 ru)
