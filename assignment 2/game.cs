@@ -12,6 +12,7 @@ namespace Template {
         public Surface screen;
         public Scene scene;
         public Camera camera;
+        public Application application;
 
             //initialize
 	        public void Init()
@@ -26,8 +27,8 @@ namespace Template {
 	        // tick: renders one frame
 	        public void Tick()
 	        {
-                //render the scene, debug is also rendered (called from within raytracer.render)
-                raytracer.Render();
+            //render the scene, debug is also rendered (called from within raytracer.render)
+                application = new Application(raytracer);
 	        }
     }
 } // namespace Template
