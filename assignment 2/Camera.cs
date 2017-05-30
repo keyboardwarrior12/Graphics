@@ -40,5 +40,15 @@ namespace template
             pos = new Vector3(0 , 0, -z); //xlength/2 doesnt work
             //(ylength) / 2 isn't nice.
         }
+
+        public void MoveCam()
+        {
+            
+        }
+
+        public void RotateCam()
+        {
+            
+        }
     }
 }
