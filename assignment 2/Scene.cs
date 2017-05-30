@@ -61,37 +61,47 @@ namespace template
         {
             Vector3 returnColor = color;
             Vector3 intersectPoint = r.Origin + (r.Dir * i.Distance);
+            Vector3 surfaceNormal = i.Primitive.getNormal(intersectPoint);
+
             foreach (Light light in lights)
             {
                 //we willen vd light naar de intersectionpoint toe gaan
                 Vector3 lightDir = (light.pos - intersectPoint).Normalized();
 
-                Intersection result = null; //null on start, if it finds an intersection, it's not null anymore
-                Intersection intersection;
-
-                Ray shadowRay;
-                shadowRay = new Ray();
-                shadowRay.Dir = lightDir;
-                shadowRay.Origin = intersectPoint + (float.Epsilon * shadowRay.Dir);
-                //offset the ray origin by epsilon times the ray direction
-
-                foreach (Primitive p in primitives)
+                //check if the light source is behind the primitive
+                if (Vector3.Dot(surfaceNormal, lightDir) < 0)
                 {
-                    intersection = p.intersect(shadowRay);
-                    if (intersection != null && (intersection.Distance < (light.pos - intersectPoint).Length - (2 * float.Epsilon))
-                        && intersection.Distance > 0) //restriction on ray: 0 < distance < Plight - I - (2 * float.epsilon)
-                    {                
-                        //if we found a valid intersection, it means we shouldn't do anything with the light
-                        result = intersection;
-                        break; //break out since there is an intersection
-                    }
+
                 }
-
-                //if no primitives in the way have been found, apply the light multiplication to the color
-                if (result == null)
+                else
                 {
-                    float lightDistanceTravelled = (light.pos - intersectPoint).Length;
-                    returnColor += (light.intensity / (lightDistanceTravelled * lightDistanceTravelled));
+                    Intersection result = null; //null on start, if it finds an intersection, it's not null anymore
+                    Intersection intersection;
+
+                    Ray shadowRay;
+                    shadowRay = new Ray();
+                    shadowRay.Dir = lightDir;
+                    shadowRay.Origin = intersectPoint + (float.Epsilon * shadowRay.Dir);
+                    //offset the ray origin by epsilon times the ray direction
+
+                    foreach (Primitive p in primitives)
+                    {
+                        intersection = p.intersect(shadowRay);
+                        if (intersection != null && (intersection.Distance < (light.pos - intersectPoint).Length - (2 * float.Epsilon))
+                            && intersection.Distance > 0) //restriction on ray: 0 < distance < Plight - I - (2 * float.epsilon)
+                        {
+                            //if we found a valid intersection, it means we shouldn't do anything with the light
+                            result = intersection;
+                            break; //break out since there is an intersection
+                        }
+                    }
+
+                    //if no primitives in the way have been found, apply the light multiplication to the color
+                    if (result == null)
+                    {
+                        float lightDistanceTravelled = (light.pos - intersectPoint).Length;
+                        returnColor += (light.intensity / (lightDistanceTravelled * lightDistanceTravelled));
+                    }
                 }
             }
 

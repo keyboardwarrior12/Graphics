@@ -39,5 +39,10 @@ namespace template
 
             return new Intersection(distanceTravelled, this);
         }
+
+        public override Vector3 getNormal(Vector3 intersectionpoint)    //sphere normal calculator
+        {
+            return (intersectionpoint - pos);
+        }
     }
 }

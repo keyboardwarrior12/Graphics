@@ -33,5 +33,10 @@ namespace template
                 return new Intersection(rayDistance, this);
             }
         }
+
+        public override Vector3 getNormal(Vector3 intersectionpoint)    //plane normal is altijd normal
+        {
+            return normal;
+        }
     }
 }

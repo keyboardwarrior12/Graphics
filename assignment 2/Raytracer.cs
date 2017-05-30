@@ -99,15 +99,14 @@ namespace template
                 //check all light sources here
                 Vector3 returnColor = i.Primitive.color / (i.Distance - 7.5f);
                 return scene.applyLights(r, i, returnColor);
+
+                //If reflective:
+                //Start nieuwe ray als reflection (trace(new ray, depth - 1))
+
+                //If diffuse:
+                //Start ray richting light source (traceIllumination())
+                //return scene.applyLights(r, i, returnColor);
             }
-
-            //If reflective:
-            //Start nieuwe ray als reflection (trace(new ray, depth - 1))
-
-            //If diffuse:
-            //Start ray richting light source (traceIllumination())
         }
     }
-
-
 }

@@ -13,5 +13,6 @@ namespace template
         public Vector3 color; //uses float values for r, g, b
 
         public abstract Intersection intersect(Ray ray);
+        public abstract Vector3 getNormal(Vector3 intersectionpoint);
     }
 }
