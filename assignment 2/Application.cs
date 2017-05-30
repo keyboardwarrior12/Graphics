@@ -14,6 +14,10 @@ namespace template
         public Application(Raytracer r)
         {
             raytracer = r;
+        }
+
+        public void Render()
+        {
             raytracer.Render();
         }
         

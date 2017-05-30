@@ -35,12 +35,14 @@ namespace Template {
 
                 debug = new Debug(screen, camera, scene, xlength, ylength);
                 raytracer = new Raytracer(screen, camera, scene, debug, xlength, ylength);
+
+                application = new Application(raytracer);
 	        }
 	        // tick: renders one frame
 	        public void Tick()
 	        {
-            //render the scene, debug is also rendered (called from within raytracer.render)
-                application = new Application(raytracer);
+            //calls the render method within raytracer, debug is also rendered (called from within raytracer.render)
+                application.Render();
 	        }
     }
 } // namespace Template

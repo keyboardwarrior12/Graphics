@@ -26,11 +26,11 @@ namespace template
                 return null;
             } else
             {
-                ray.Distance = -(Vector3.Dot(ray.Origin, normal) + distance) / Vector3.Dot(ray.Dir, normal);
+                float rayDistance = -(Vector3.Dot(ray.Origin, normal) + distance) / Vector3.Dot(ray.Dir, normal);
 
-                if (ray.Distance < 0) return null;
+                if (rayDistance < 0) return null;
 
-                return new Intersection(ray.Distance, this);
+                return new Intersection(rayDistance, this);
             }
         }
     }

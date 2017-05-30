@@ -73,9 +73,16 @@ namespace template
             }
         }
 
-        public void RenderLight()
+        public void RenderLight(Light light)
         {
-
+            for (float x = light.pos.X - 1; x < light.pos.X + 1; x++)
+            {
+                for (float y = light.pos.Y - 1; y < light.pos.Y +1; y++)
+                {
+                    surface.Plot(TX(x), TY(y), createColor(light.intensity));
+                }
+            }
+            //draws 9 dots (3 by 3) for a light
         }
 
         public void RenderRay(Ray ray, Intersection intersection)

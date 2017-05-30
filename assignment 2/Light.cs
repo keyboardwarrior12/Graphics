@@ -9,7 +9,13 @@ namespace template
 {
     class Light
     {
-        Vector3 intensity; //float values for r, g, b
-        Vector3 pos;
+        public Vector3 intensity; //float values for r, g, b
+        public Vector3 pos;
+
+        public Light(Vector3 intensity, Vector3 pos)
+        {
+            this.intensity = intensity;
+            this.pos = pos;
+        }
     }
 }

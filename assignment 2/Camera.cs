@@ -21,7 +21,7 @@ namespace template
         public Vector3 screenru; //right up
 
         //for screen plane
-        public Camera()
+        public Camera()//FOV ANGLE
         {
             screenlu = new Vector3(-2, 2, 0);
             screenld = new Vector3(-2, -2, 0);

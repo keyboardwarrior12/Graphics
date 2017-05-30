@@ -55,8 +55,7 @@ namespace template
                 {
                     //add the z calculations here once we have a working rotating camera
                     Vector3 screenpoint = new Vector3(xlength * ((float)x/(screen.width/2)) - 2f, 
-                        ylength * ((float)y/screen.height) - 2f , 0); //z is 0, op slack zeiden ze 1
-                    //maar bij ons is 0 goed
+                        ylength * ((float)y/screen.height) - 2f , 0); //z heeft met cam te maken
 
                     ray = new Ray();
                     ray.Origin = camera.pos;
@@ -74,8 +73,6 @@ namespace template
                         color = trace(ray, 6, false);
                     }
                     screen.Plot(x, y, debug.createColor(color));
-
-                    //createshadowRay(ray)
 
 
                 }
@@ -99,13 +96,10 @@ namespace template
             }
             else //if there is actually an intersection
             {
-                return i.Primitive.color;
+                //check all light sources here
+                Vector3 returnColor = i.Primitive.color / (i.Distance - 7.5f);
+                return scene.applyLights(r, i, returnColor);
             }
-
-            
-            //Intersect, in scene.Intersect(deze returned closest intersection)
-
-            //If null, black
 
             //If reflective:
             //Start nieuwe ray als reflection (trace(new ray, depth - 1))
@@ -113,11 +107,7 @@ namespace template
             //If diffuse:
             //Start ray richting light source (traceIllumination())
         }
-
-        //Vector3 I = intersection point on the sphere/plane
-        void createShadowRay(Ray ray, Vector3 I)
-        {
-            
-        }
     }
+
+
 }
