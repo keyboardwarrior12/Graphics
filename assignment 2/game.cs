@@ -14,9 +14,11 @@ namespace Template {
         public Surface screen;
         public Scene scene;
         public Camera camera;
+
         private KeyboardState keyboardState, lastKeyboardState; //for input
         Boolean handledPress;
 
+        Vector3 cameraDir = new Vector3(0, 0, 1);
         float z = 3; //negative of this is the z location of the cam
         private int FOV = 90; //field of view in degrees.
 
@@ -29,7 +31,7 @@ namespace Template {
                 screen = new Surface(1024, 512);
 
                 float FOVfactor = z * Math.Abs((float)Math.Tan(FOV * Math.PI/360));
-                camera = new Camera(- FOVfactor, FOVfactor, FOVfactor, - FOVfactor, z); 
+                camera = new Camera(- FOVfactor, FOVfactor, FOVfactor, - FOVfactor, z, cameraDir); 
                 scene = new Scene(debug);
 
                 left = camera.screenlu.X;

@@ -25,7 +25,7 @@ namespace template
             Material m = new Mirror();
 
             //create plane
-            Plane p = new Plane(2.0f, new Vector3(0, 1, 0).Normalized(), new Vector3(1f, 1, 1f), d);
+            Plane p = new Plane(2.0f, new Vector3(0, 1, 0).Normalized(), new Vector3(.1f, .1f, .1f), d);
             primitives.Add(p);
 
             //create spheres
@@ -79,6 +79,7 @@ namespace template
             Vector3 returnColor = color;
             Vector3 intersectPoint = r.Origin + (r.Dir * i.Distance);
             Vector3 surfaceNormal = i.normal;
+            Ray shadowRay;
 
             foreach (Light light in lights)
             {
@@ -95,7 +96,6 @@ namespace template
                     Intersection result = null; //null on start, if it finds an intersection, it's not null anymore
                     Intersection intersection;
 
-                    Ray shadowRay;
                     shadowRay = new Ray();
                     shadowRay.Dir = lightDir;
                     shadowRay.Origin = intersectPoint + (float.Epsilon * shadowRay.Dir);
@@ -115,11 +115,14 @@ namespace template
                         }
                     }
 
+
+
                     //if no primitives in the way have been found, apply the light multiplication to the color
                     if (result == null)
                     {
                         float lightDistanceTravelled = (light.pos - intersectPoint).Length;
                         returnColor *= (new Vector3(1, 1, 1) +(light.intensity / (lightDistanceTravelled * lightDistanceTravelled)));
+                        //if (isDebugRay) { debug.RenderShadowRay(shadowRay); } render debug rays they said, it will be fun they said
                     }
                 }
             }

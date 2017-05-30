@@ -119,6 +119,14 @@ namespace template
                 TY(intersectionpoint.Z), 0xFF0000); //shadowrays are red
         }
 
+        public void RenderShadowRay(Ray ray)
+        {
+            Vector3 intersectionpoint = ray.Origin + (500 * ray.Dir);
+            surface.Line(TX(ray.Origin.X), TY(ray.Origin.Z),
+                TX(intersectionpoint.X),
+                TY(intersectionpoint.Z), 0xFF0000); //shadowrays are red
+        }
+
         public void RenderSecondaryRay(Ray ray, Intersection intersection)
         {
             Vector3 intersectionpoint = ray.Origin + (intersection.Distance * ray.Dir);

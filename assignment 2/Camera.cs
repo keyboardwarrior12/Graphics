@@ -24,11 +24,13 @@ namespace template
         public float ylength;
 
         //for screen plane
-        public Camera(float left, float up, float right, float down, float z)//FOV ANGLE
+        public Camera(float left, float up, float right, float down, float z, Vector3 dir)//FOV ANGLE
         {
             screenlu = new Vector3(left, up, 0);
             screenld = new Vector3(left, down, 0);
             screenru = new Vector3(right, up, 0);
+
+            this.dir = dir;
 
             xlength = Math.Abs(left) + Math.Abs(right);
             ylength = Math.Abs(up) + Math.Abs(down);
