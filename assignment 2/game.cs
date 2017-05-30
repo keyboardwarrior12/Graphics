@@ -14,15 +14,27 @@ namespace Template {
         public Camera camera;
         public Application application;
 
-            //initialize
-	        public void Init()
+        private float left, up, down, right;
+        private float xlength, ylength; //length of x axis and y axis
+
+        //initialize
+        public void Init()
 	        {
                 screen = new Surface(1024, 512);
                 camera = new Camera();
                 scene = new Scene();
                 camera = new Camera();
-                debug = new Debug(screen, camera, scene);
-                raytracer = new Raytracer(screen, camera, scene, debug);
+
+                left = camera.screenlu.X;
+                up = camera.screenlu.Y;
+                right = camera.screenru.X;
+                down = camera.screenld.Y;
+
+                xlength = Math.Abs(left) + Math.Abs(right);
+                ylength = Math.Abs(up) + Math.Abs(down);
+
+                debug = new Debug(screen, camera, scene, xlength, ylength);
+                raytracer = new Raytracer(screen, camera, scene, debug, xlength, ylength);
 	        }
 	        // tick: renders one frame
 	        public void Tick()

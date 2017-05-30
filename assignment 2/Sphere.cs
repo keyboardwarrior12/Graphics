@@ -35,10 +35,7 @@ namespace template
 
             distanceTravelled -= (float)Math.Sqrt((radius * radius) - pSquare);
 
-            if ((distanceTravelled < ray.Distance) && (distanceTravelled > 0))
-            {
-                ray.Distance = distanceTravelled;
-            }
+            if (distanceTravelled < 0) return null;
 
             return new Intersection(distanceTravelled, this);
         }

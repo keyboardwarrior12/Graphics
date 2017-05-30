@@ -16,16 +16,19 @@ namespace template
         public Surface surface;
         //Display surface
 
-        public float planewidth = 4;
+        private float planewidthx, planewidthy;
         public int zoom = 5;
 
-        public Debug(Surface surface, Camera camera, Scene scene)
+        public Debug(Surface surface, Camera camera, Scene scene, float xlength, float ylength)
         {
             this.scene = scene;
             this.camera = camera;
             this.surface = surface;
 
             int x = surface.width;
+
+            planewidthx = xlength;
+            planewidthy = ylength;
         }
 
         public void Render()
@@ -77,7 +80,7 @@ namespace template
 
         public void RenderRay(Ray ray, Intersection intersection)
         {
-            Vector3 intersectionpoint =  ray.Origin + (intersection.Distance * ray.Dir);
+            Vector3 intersectionpoint = ray.Origin + (intersection.Distance * ray.Dir);
             surface.Line(TX(ray.Origin.X), TY(ray.Origin.Z), 
                 TX(intersectionpoint.X), 
                 TY(intersectionpoint.Z), 0xFFFF00);
@@ -101,8 +104,8 @@ namespace template
         //translations
         public int TX(float x)
         {
-            x += ((planewidth/2) * zoom);  //offset //centerX = 0 dus niet -0 want dat is wasted psace
-            x *= (512 / planewidth);   //scale (512 = screen.width(debugscreen))
+            x += ((planewidthx/2) * zoom);  //offset //centerX = 0 dus niet -0 want dat is wasted psace
+            x *= (512 / planewidthx);   //scale (512 = screen.width(debugscreen))
             x = x / zoom;     //zoom extra
             x += 512;
             return (int)x;
@@ -110,8 +113,8 @@ namespace template
 
         public int TY(float y)
         {
-            y += ((planewidth/2) * zoom);            //offset, normaal - centerY maar die is 0 bij ons
-            y *= (surface.height / planewidth);            //scale
+            y += ((planewidthy/2) * zoom);            //offset, normaal - centerY maar die is 0 bij ons
+            y *= (surface.height / planewidthy);            //scale
             //zoom (higher zoom = zooming out)
             y /= zoom;
             //reverse the y

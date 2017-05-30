@@ -27,7 +27,9 @@ namespace template
             } else
             {
                 ray.Distance = -(Vector3.Dot(ray.Origin, normal) + distance) / Vector3.Dot(ray.Dir, normal);
-                //Vector3 intersectionpoint = ray.Origin + ray.Distance * ray.Dir;
+
+                if (ray.Distance < 0) return null;
+
                 return new Intersection(ray.Distance, this);
             }
         }

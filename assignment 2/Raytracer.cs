@@ -26,12 +26,17 @@ namespace template
         public Debug debug;
         public int[,] pixels;
 
-        public Raytracer(Surface screen, Camera camera, Scene scene, Debug debug)
+        private float xlength, ylength; //length of x axis and y axis
+
+        public Raytracer(Surface screen, Camera camera, Scene scene, Debug debug, float xlength, float ylength)
         {
             this.screen = screen;
             this.camera = camera;
             this.scene = scene;
             this.debug = debug;
+
+            this.xlength = xlength;
+            this.ylength = ylength;
 
             //In de surface class worden alle pixels al opgeslagen
             //Kijk even bij Plot methode in surface
@@ -49,8 +54,9 @@ namespace template
                 for (int y = 0; y < 512; y++)
                 {
                     //add the z calculations here once we have a working rotating camera
-                    Vector3 screenpoint = new Vector3(4 * ((float)x/(screen.width/2)) - 2f, 
-                        4 * ((float)y/screen.height) - 2f , 1);
+                    Vector3 screenpoint = new Vector3(xlength * ((float)x/(screen.width/2)) - 2f, 
+                        ylength * ((float)y/screen.height) - 2f , 0); //z is 0, op slack zeiden ze 1
+                    //maar bij ons is 0 goed
 
                     ray = new Ray();
                     ray.Origin = camera.pos;
@@ -59,7 +65,7 @@ namespace template
 
 
                     Vector3 color;
-                    if (y == 0 && (x & 63) == 0)
+                    if (y == 256 && (x % 63) == 0)
                     {
                         color = trace(ray, 6, true);
                     }
@@ -85,9 +91,7 @@ namespace template
 
             Intersection i = scene.intersect(r);
 
-            //if (isDebugRay)
-            if (i != null)
-                debug.RenderRay(r, i);
+            if(isDebugRay && i != null) debug.RenderRay(r, i);
 
             if (i == null)
             {
