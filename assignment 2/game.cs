@@ -40,7 +40,7 @@ namespace Template {
                 debug = new Debug(screen, camera, scene);
                 raytracer = new Raytracer(screen, camera, scene, debug);
 
-                application = new Application(raytracer);
+                application = new Application(raytracer, camera);
 	        }
 	        // tick: renders one frame
 	        public void Tick()

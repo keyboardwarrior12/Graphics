@@ -11,9 +11,11 @@ namespace template
     class Application
     {
         public Raytracer raytracer;
-        public Application(Raytracer r)
+        public Camera camera;
+        public Application(Raytracer r, Camera c)
         {
             raytracer = r;
+            camera = c;
         }
 
         public void Render()
@@ -21,17 +23,21 @@ namespace template
             raytracer.Render();
         }
         
-        private void KeyUp(object sender, EventArgs ea)
+        public void KeyPressed(object sender, KeyPressEventArgs keyPEA)
         {
-            Vector3 camera = raytracer.camera.pos;
-            Vector3 vectorUp = camera + new Vector3(1, 1, 1);
-            raytracer.camera.pos = vectorUp;
+            switch (keyPEA.KeyChar)
+            {
+                case '.': //go to the right //This is the >
+                    break;
+                case ',': //go to the left //This is the <
+                    break;
+            }
+                
         }
 
-        private void KeyDown(object sender, EventArgs ea)
+        public void ChangeFOV(Camera camera)
         {
 
         }
-        //Keyboard/Mouse input
     }
 }
