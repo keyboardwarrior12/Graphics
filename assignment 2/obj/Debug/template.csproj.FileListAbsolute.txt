@@ -1,7 +1,0 @@
-C:\Users\ilhan\Documents\Graphics\assignment 2\bin\Debug\template.exe.config
-C:\Users\ilhan\Documents\Graphics\assignment 2\bin\Debug\template.exe
-C:\Users\ilhan\Documents\Graphics\assignment 2\bin\Debug\template.pdb
-C:\Users\ilhan\Documents\Graphics\assignment 2\bin\Debug\OpenTK.dll
-C:\Users\ilhan\Documents\Graphics\assignment 2\obj\Debug\template.csprojResolveAssemblyReference.cache
-C:\Users\ilhan\Documents\Graphics\assignment 2\obj\Debug\template.exe
-C:\Users\ilhan\Documents\Graphics\assignment 2\obj\Debug\template.pdb
