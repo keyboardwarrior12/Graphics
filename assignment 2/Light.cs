@@ -9,7 +9,7 @@ namespace template
 {
     class Light
     {
-        public Vector3 intensity; //float values for r, g, b
+        public Vector3 intensity; //float values for r, g, b, this way we can have colored lightning aswell :D
         public Vector3 pos;
 
         public Light(Vector3 intensity, Vector3 pos)

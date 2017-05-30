@@ -12,11 +12,12 @@ namespace template
         public Vector3 normal;
         public float distance; //distance to the plane origin
 
-        public Plane(float distance, Vector3 normal, Vector3 color)
+        public Plane(float distance, Vector3 normal, Vector3 color, Material material)
         {
             this.distance = distance;
             this.normal = normal;
-            this.color = color;
+            this.color = color.Normalized();
+            this.material = material;
         }
 
         public override Intersection intersect(Ray ray)
@@ -30,7 +31,7 @@ namespace template
 
                 if (rayDistance < 0) return null;
 
-                return new Intersection(rayDistance, this);
+                return new Intersection(rayDistance, this, getNormal(ray.Origin + (ray.Dir * rayDistance)));
             }
         }
 

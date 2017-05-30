@@ -19,7 +19,7 @@ namespace template
         private float planewidthx, planewidthy;
         public int zoom = 5;
 
-        public Debug(Surface surface, Camera camera, Scene scene, float xlength, float ylength)
+        public Debug(Surface surface, Camera camera, Scene scene)
         {
             this.scene = scene;
             this.camera = camera;
@@ -27,8 +27,9 @@ namespace template
 
             int x = surface.width;
 
-            planewidthx = xlength;
-            planewidthy = ylength;
+            //beide gewoon 4 gehouden zodat debug scherm lekker groot blijft, ook al is je 3d view heel klein
+            planewidthx = 4 + (camera.xlength /4);//camera.xlength;
+            planewidthy = 4 + (camera.ylength /4);//camera.ylength;
         }
 
         public void Render()

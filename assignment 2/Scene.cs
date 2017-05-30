@@ -18,22 +18,33 @@ namespace template
             primitives = new List<Primitive>();
             lights = new List<Light>();
 
+            Material d = new DiffuseMaterial();
+            Material m = new Mirror();
+
             //create plane
-            //Plane p = new Plane(1.0f, new Vector3(0, 1, 0).Normalized(), new Vector3(.55f, 1, .44f));
+            //Plane p = new Plane(2.0f, new Vector3(0, 1, 0).Normalized(), new Vector3(.55f, 1, .44f), d);
             //primitives.Add(p);
-            
+
             //create spheres
-            Sphere s1 = new Sphere(new Vector3(-4, 0, 4), 2.0f, new Vector3(0.25f, 1, 1));
+            Sphere s1 = new Sphere(new Vector3(-4, 0, 4), 2.0f, new Vector3(0.25f, 1, 1), d);
             primitives.Add(s1); //voeg de primitive toe aan de lijst
 
-            Sphere s2 = new Sphere(new Vector3(0, 0, 5), 2.0f, new Vector3(0.48f, 0.14f, 0.15f));
+            Sphere s2 = new Sphere(new Vector3(0, 0, 5), 2.0f, new Vector3(0.48f, 0.14f, 0.15f), d);
             primitives.Add(s2);
 
-            Sphere s3 = new Sphere(new Vector3(4, 0, 4), 2.0f, new Vector3(1, 0, 0));
+            Sphere s3 = new Sphere(new Vector3(3, 0, 2), 2.0f, new Vector3(1, 1, 1), d);
             primitives.Add(s3);
 
-            Light light = new Light(new Vector3(2, 2, 2), new Vector3(4, 5, 2));
+            //add some lights
+            Light light = new Light(new Vector3(30, 30, 30), new Vector3(4, 5, 2));
             lights.Add(light);
+
+            Light light2 = new Light(new Vector3(10, 10, 10), new Vector3(6, 6, 0));
+            lights.Add(light2);
+
+            //fancy green light
+            Light greenLight = new Light(new Vector3(0, 30, 0), new Vector3(0, 8, 4));
+            lights.Add(greenLight);
         }
         
         public Intersection intersect(Ray ray)
@@ -61,7 +72,7 @@ namespace template
         {
             Vector3 returnColor = color;
             Vector3 intersectPoint = r.Origin + (r.Dir * i.Distance);
-            Vector3 surfaceNormal = i.Primitive.getNormal(intersectPoint);
+            Vector3 surfaceNormal = i.normal;
 
             foreach (Light light in lights)
             {
@@ -100,11 +111,24 @@ namespace template
                     if (result == null)
                     {
                         float lightDistanceTravelled = (light.pos - intersectPoint).Length;
-                        returnColor += (light.intensity / (lightDistanceTravelled * lightDistanceTravelled));
+                        returnColor *= (new Vector3(1, 1, 1) +(light.intensity / (lightDistanceTravelled * lightDistanceTravelled)));
                     }
                 }
             }
 
+            //clamp values to max 1,1,1
+            if (returnColor.X > 1)
+            {
+                returnColor.X = 1;
+            }
+            if (returnColor.Y > 1)
+            {
+                returnColor.Y = 1;
+            }
+            if (returnColor.Z > 1)
+            {
+                returnColor.Z = 1;
+            }
             return returnColor;
         }
     }

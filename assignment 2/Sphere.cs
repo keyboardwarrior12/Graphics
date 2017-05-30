@@ -12,12 +12,12 @@ namespace template
         public Vector3 pos;
         public float radius;
 
-        public Sphere(Vector3 pos, float radius, Vector3 color)
+        public Sphere(Vector3 pos, float radius, Vector3 color, Material material)
         {
             this.pos = pos;
             this.radius = radius;
-            this.color = color;
             this.color = color.Normalized();
+            this.material = material;
         }
 
         public override Intersection intersect(Ray ray)
@@ -37,7 +37,7 @@ namespace template
 
             if (distanceTravelled < 0) return null;
 
-            return new Intersection(distanceTravelled, this);
+            return new Intersection(distanceTravelled, this, getNormal(ray.Origin + (ray.Dir * distanceTravelled)));
         }
 
         public override Vector3 getNormal(Vector3 intersectionpoint)    //sphere normal calculator

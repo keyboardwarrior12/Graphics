@@ -28,15 +28,15 @@ namespace template
 
         private float xlength, ylength; //length of x axis and y axis
 
-        public Raytracer(Surface screen, Camera camera, Scene scene, Debug debug, float xlength, float ylength)
+        public Raytracer(Surface screen, Camera camera, Scene scene, Debug debug)
         {
             this.screen = screen;
             this.camera = camera;
             this.scene = scene;
             this.debug = debug;
 
-            this.xlength = xlength;
-            this.ylength = ylength;
+            xlength = camera.xlength;
+            ylength = camera.ylength;
 
             //In de surface class worden alle pixels al opgeslagen
             //Kijk even bij Plot methode in surface
@@ -54,8 +54,8 @@ namespace template
                 for (int y = 0; y < 512; y++)
                 {
                     //add the z calculations here once we have a working rotating camera
-                    Vector3 screenpoint = new Vector3(xlength * ((float)x/(screen.width/2)) - 2f, 
-                        ylength * ((float)y/screen.height) - 2f , 0); //z heeft met cam te maken
+                    Vector3 screenpoint = new Vector3(xlength * ((float)x/(screen.width/2)) - (xlength/2), 
+                        ylength * ((float)y/screen.height) - (ylength/2) , 0); //z heeft met cam te maken
 
                     ray = new Ray();
                     ray.Origin = camera.pos;
@@ -72,7 +72,8 @@ namespace template
                     {
                         color = trace(ray, 6, false);
                     }
-                    screen.Plot(x, y, debug.createColor(color));
+                    screen.Plot(x, 512 - y, debug.createColor(color)); 
+                    //512 - y because to invert the y axis (so positive is up and negative is down)
 
 
                 }
@@ -97,15 +98,22 @@ namespace template
             else //if there is actually an intersection
             {
                 //check all light sources here
-                Vector3 returnColor = i.Primitive.color / (i.Distance - 7.5f);
-                return scene.applyLights(r, i, returnColor);
-
-                //If reflective:
-                //Start nieuwe ray als reflection (trace(new ray, depth - 1))
+                Vector3 returnColor = i.Primitive.color / (i.Distance - 5f);
 
                 //If diffuse:
-                //Start ray richting light source (traceIllumination())
+                //Start ray towards light source (traceIllumination())
                 //return scene.applyLights(r, i, returnColor);
+                //if (i.Primitive.material is DiffuseMaterial)
+                {
+                    return scene.applyLights(r, i, returnColor);
+                }
+                else //if material == mirror, start new ray as reflection(trace(new ray, depth - 1))
+                {
+                    Ray reflectionRay = new Ray();
+                    reflectionRay.Dir = -(2 * (Vector3.Dot(i.normal, r.Dir)) * (i.normal - r.Dir));
+                    reflectionRay.Origin = r.Origin + (r.Dir * i.Distance);
+                    return trace(reflectionRay, depth - 1, isDebugRay);
+                }
             }
         }
     }

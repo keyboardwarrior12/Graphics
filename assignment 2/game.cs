@@ -21,9 +21,8 @@ namespace Template {
         public void Init()
 	        {
                 screen = new Surface(1024, 512);
-                camera = new Camera();
+                camera = new Camera(-6, 6, 6, -6); 
                 scene = new Scene();
-                camera = new Camera();
 
                 left = camera.screenlu.X;
                 up = camera.screenlu.Y;
@@ -33,8 +32,8 @@ namespace Template {
                 xlength = Math.Abs(left) + Math.Abs(right);
                 ylength = Math.Abs(up) + Math.Abs(down);
 
-                debug = new Debug(screen, camera, scene, xlength, ylength);
-                raytracer = new Raytracer(screen, camera, scene, debug, xlength, ylength);
+                debug = new Debug(screen, camera, scene);
+                raytracer = new Raytracer(screen, camera, scene, debug);
 
                 application = new Application(raytracer);
 	        }
