@@ -30,12 +30,17 @@ green lines: secondary rays.
 Our plane is glitched but we haven't commented it out so you can see that our 3rd sphere with the mirror class actually works.
 
 
- _          _                      
-| |        | |                     
-| |     ___| |_ ___    __ _  ___   
-| |    / _ \ __/ __|  / _` |/ _ \  
-| |___|  __/ |_\__ \ | (_| | (_) | 
-\_____/\___|\__|___/  \__, |\___/  
-                       __/ |       
-                      |___/        
+For the camera: you can change the z of the camera and the direction in the game class. Spheres are fully supported (hue).
+We have keyboard support in the game class aswell (handlekeyboarpress methods). Very sexy debug output.
+
+
+
+ _____  ______      _         _____       _ _     _   _____    ________
+|_   _| | ___ \    | |       /  ___|     | (_)   | | |  ___|  / /___  /
+  | |   | |_/ /__ _| |_ ___  \ `--.  ___ | |_  __| | |___ \  / /   / / 
+  | |   |    // _` | __/ _ \  `--. \/ _ \| | |/ _` |     \ \/ /   / /  
+ _| |_  | |\ \ (_| | ||  __/ /\__/ / (_) | | | (_| | /\__/ / /  ./ /   
+ \___/  \_| \_\__,_|\__\___| \____/ \___/|_|_|\__,_| \____/_/   \_/    
+                                                                       
+                                                                       
 
