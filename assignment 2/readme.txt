@@ -16,6 +16,19 @@ Materials
 We have used the slides from the graphics website. We also used the help of other students (and the student assistants) and professors (mainly via slack).
 
 
+Camera movement: wasd are used to zoom in, out, and look to the left and right. There's also the two arrows keys left and right, for bigger angles.
+
+Debug:
+
+White horizontal line: screen plane;
+very small dot where all those yellow lines come from: camera
+yellow lines: primary rays
+circles: spheres
+boxes with 45 degree angle: lights
+green lines: secondary rays.
+
+Our plane is glitched but we haven't commented it out so you can see that our 3rd sphere with the mirror class actually works.
+
 
  _          _                      
 | |        | |                     
