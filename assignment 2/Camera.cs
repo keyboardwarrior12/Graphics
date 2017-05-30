@@ -24,7 +24,7 @@ namespace template
         public float ylength;
 
         //for screen plane
-        public Camera(float left, float up, float right, float down)//FOV ANGLE
+        public Camera(float left, float up, float right, float down, float z)//FOV ANGLE
         {
             screenlu = new Vector3(left, up, 0);
             screenld = new Vector3(left, down, 0);
@@ -37,7 +37,7 @@ namespace template
             //enough zoom.
 
             //make cam always start in the middle
-            pos = new Vector3(0 , 0, -6); //xlength/2 doesnt work
+            pos = new Vector3(0 , 0, -z); //xlength/2 doesnt work
             //(ylength) / 2 isn't nice.
         }
     }

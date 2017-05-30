@@ -14,6 +14,9 @@ namespace Template {
         public Camera camera;
         public Application application;
 
+        float z = 3; //same as the z location of the cam
+        private int FOV = 90; //field of view in degrees.
+
         private float left, up, down, right;
         private float xlength, ylength; //length of x axis and y axis
 
@@ -21,7 +24,9 @@ namespace Template {
         public void Init()
 	        {
                 screen = new Surface(1024, 512);
-                camera = new Camera(-6, 6, 6, -6); 
+
+                float FOVfactor = z * Math.Abs((float)Math.Tan(FOV * Math.PI/360));
+                camera = new Camera(- FOVfactor, FOVfactor, FOVfactor, - FOVfactor, z); 
                 scene = new Scene();
 
                 left = camera.screenlu.X;

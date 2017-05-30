@@ -103,7 +103,7 @@ namespace template
                 //If diffuse:
                 //Start ray towards light source (traceIllumination())
                 //return scene.applyLights(r, i, returnColor);
-                //if (i.Primitive.material is DiffuseMaterial)
+                if (i.Primitive.material is DiffuseMaterial)
                 {
                     return scene.applyLights(r, i, returnColor);
                 }

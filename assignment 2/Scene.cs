@@ -26,13 +26,13 @@ namespace template
             //primitives.Add(p);
 
             //create spheres
-            Sphere s1 = new Sphere(new Vector3(-4, 0, 4), 2.0f, new Vector3(0.25f, 1, 1), d);
+            Sphere s1 = new Sphere(new Vector3(-3, 0, 4), 2.0f, new Vector3(0.25f, 1, 1), d);
             primitives.Add(s1); //voeg de primitive toe aan de lijst
 
             Sphere s2 = new Sphere(new Vector3(0, 0, 5), 2.0f, new Vector3(0.48f, 0.14f, 0.15f), d);
             primitives.Add(s2);
 
-            Sphere s3 = new Sphere(new Vector3(3, 0, 2), 2.0f, new Vector3(1, 1, 1), d);
+            Sphere s3 = new Sphere(new Vector3(3, 0, 8), 2.0f, new Vector3(1, 1, 1), m);
             primitives.Add(s3);
 
             //add some lights
@@ -58,7 +58,7 @@ namespace template
                 if (i != null)
                 {
                     //filter out the smallest intersection, 
-                    if (result == null || result.Distance < i.Distance)
+                    if (result == null || result.Distance > i.Distance) //if the result distance is bigger, make it the smaller one
                     {
                         result = i;
                     }
