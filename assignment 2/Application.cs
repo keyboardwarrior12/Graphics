@@ -27,17 +27,17 @@ namespace template
         {
             switch (keyPEA.KeyChar)
             {
-                case '.': //go to the right //This is the >
+                case 'd': //go right
                     break;
-                case ',': //go to the left //This is the <
+                case 'a': //go left 
                     break;
-            }
-                
-        }
-
-        public void ChangeFOV(Camera camera)
-        {
-
+                case 's': //go down
+                    break;
+                case 'w': //go up
+                    break;
+                case 'r': camera.RotateCam();
+                    break;
+            }  
         }
     }
 }
