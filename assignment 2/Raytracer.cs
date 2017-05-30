@@ -105,7 +105,7 @@ namespace template
                 //return scene.applyLights(r, i, returnColor);
                 if (i.Primitive.material is DiffuseMaterial)
                 {
-                    return scene.applyLights(r, i, returnColor);
+                    return scene.applyLights(r, i, returnColor, isDebugRay);
                 }
                 else //if material == mirror, start new ray as reflection(trace(new ray, depth - 1))
                 {

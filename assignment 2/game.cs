@@ -27,7 +27,7 @@ namespace Template {
 
                 float FOVfactor = z * Math.Abs((float)Math.Tan(FOV * Math.PI/360));
                 camera = new Camera(- FOVfactor, FOVfactor, FOVfactor, - FOVfactor, z); 
-                scene = new Scene();
+                scene = new Scene(debug);
 
                 left = camera.screenlu.X;
                 up = camera.screenlu.Y;

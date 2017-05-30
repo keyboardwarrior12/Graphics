@@ -11,10 +11,13 @@ namespace template
     {
         public List<Primitive> primitives;
         public List<Light> lights;
+        Debug debug;
 
         //initialize here; create the primitives/lights
-        public Scene()
+        public Scene(Debug debug)
         {
+            this.debug = debug;
+
             primitives = new List<Primitive>();
             lights = new List<Light>();
 
@@ -68,7 +71,7 @@ namespace template
             return result;
         }
 
-        public Vector3 applyLights(Ray r, Intersection i, Vector3 color)
+        public Vector3 applyLights(Ray r, Intersection i, Vector3 color, bool isDebugRay)
         {
             Vector3 returnColor = color;
             Vector3 intersectPoint = r.Origin + (r.Dir * i.Distance);
@@ -82,7 +85,7 @@ namespace template
                 //check if the light source is behind the primitive
                 if (Vector3.Dot(surfaceNormal, lightDir) < 0)
                 {
-
+                    //do not do anything if the light is behind primitive
                 }
                 else
                 {
@@ -103,6 +106,8 @@ namespace template
                         {
                             //if we found a valid intersection, it means we shouldn't do anything with the light
                             result = intersection;
+
+                            //debug.RenderShadowRay(shadowRay, result);//render shadowray if it's debug ray <!-- not working -->
                             break; //break out since there is an intersection
                         }
                     }

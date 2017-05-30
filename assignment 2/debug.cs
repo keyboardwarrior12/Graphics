@@ -41,6 +41,11 @@ namespace template
             {
                 RenderPrimitive(scene.primitives[i]);
             }
+
+            foreach(Light light in scene.lights)
+            {
+                RenderLight(light);
+            }
         }
 
         public void RenderPrimitive(Primitive p)
@@ -76,14 +81,16 @@ namespace template
 
         public void RenderLight(Light light)
         {
-            for (float x = light.pos.X - 1; x < light.pos.X + 1; x++)
-            {
-                for (float y = light.pos.Y - 1; y < light.pos.Y +1; y++)
-                {
-                    surface.Plot(TX(x), TY(y), createColor(light.intensity));
-                }
-            }
-            //draws 9 dots (3 by 3) for a light
+            float lightx = light.pos.X;
+            float lightz = light.pos.Z;
+
+            float x = .3f, z = .3f;
+
+            surface.Line(TX(lightx + x), TY(lightz), TX(lightx), TY(lightz - z), 0x00FF00);
+            surface.Line(TX(lightx), TY(lightz - z), TX(lightx - x), TY(lightz), 0x00FF00);
+            surface.Line(TX(lightx - x), TY(lightz), TX(lightx), TY(lightz + z), 0x00FF00);
+            surface.Line(TX(lightx), TY(lightz + z), TX(lightx + x), TY(lightz), 0x00FF00);
+            //make a green rectangle laying on it's side for each light
         }
 
         public void RenderRay(Ray ray, Intersection intersection)
@@ -91,6 +98,14 @@ namespace template
             Vector3 intersectionpoint = ray.Origin + (intersection.Distance * ray.Dir);
             surface.Line(TX(ray.Origin.X), TY(ray.Origin.Z), 
                 TX(intersectionpoint.X), 
+                TY(intersectionpoint.Z), 0xFFFF00);
+        }
+
+        public void RenderShadowRay(Ray ray, Intersection intersection)
+        {
+            Vector3 intersectionpoint = ray.Origin + (intersection.Distance * ray.Dir);
+            surface.Line(TX(ray.Origin.X), TY(ray.Origin.Z),
+                TX(intersectionpoint.X),
                 TY(intersectionpoint.Z), 0xFFFF00);
         }
 
