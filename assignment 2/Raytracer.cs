@@ -25,7 +25,6 @@ namespace template
         public Surface screen; //deze was eerst surfaace
         public Debug debug;
         public int[,] pixels;
-        public Intersection[,] Intersections;
 
         public Raytracer(Surface screen, Camera camera, Scene scene, Debug debug)
         {
@@ -37,7 +36,7 @@ namespace template
             //In de surface class worden alle pixels al opgeslagen
             //Kijk even bij Plot methode in surface
             pixels = new int[screen.width, screen.height];
-            Intersections = new Intersection[screen.width / 2, screen.height];
+
         }
 
         public void Render()
@@ -50,39 +49,65 @@ namespace template
                 for (int y = 0; y < 512; y++)
                 {
                     //add the z calculations here once we have a working rotating camera
-                    Vector3 screenpoint = new Vector3(4 * (x/(screen.width/2)) - 2f, 
-                        4 * (y/screen.height) - 2f , 1);
+                    Vector3 screenpoint = new Vector3(4 * ((float)x/(screen.width/2)) - 2f, 
+                        4 * ((float)y/screen.height) - 2f , 1);
 
                     ray = new Ray();
                     ray.Origin = camera.pos;
                     ray.Dir = (screenpoint - ray.Origin).Normalized();
-                    //normaliseer ray for ease
+                    //normaliseer ray so length is 1
 
-                    //loop through primitives list for each ray, detect earliest collision
-                    foreach (Primitive p in scene.primitives)
-                    {
-                        Intersection i = p.intersect(ray);
-                        if (i != null)
-                        {
-                            //filter out the smallest intersection, 
-                            if (Intersections[x, y] == null || Intersections[x,y].Distance < i.Distance)
-                            {
-                                Intersections[x, y] = i;
-                            }
-                        }
-                    }
 
-                    //if there actually is an intersection
-                    if (Intersections[x,y] != null)
+                    Vector3 color;
+                    if (y == 0 && (x & 63) == 0)
                     {
-                        //if (y == 0 / 2 && (x & 63) == 0){
-                            debug.RenderRay(ray, Intersections[x, y]);
+                        color = trace(ray, 6, true);
                     }
+                    else
+                    {
+                        color = trace(ray, 6, false);
+                    }
+                    screen.Plot(x, y, debug.createColor(color));
 
                     //createshadowRay(ray)
+
+
                 }
             }
             debug.Render();
+        }
+
+        private Vector3 trace(Ray r, int depth, bool isDebugRay)
+        {
+            if (depth == 0) {
+                return Vector3.Zero;
+            }
+
+            Intersection i = scene.intersect(r);
+
+            //if (isDebugRay)
+            if (i != null)
+                debug.RenderRay(r, i);
+
+            if (i == null)
+            {
+                return Vector3.Zero;
+            }
+            else //if there is actually an intersection
+            {
+                return i.Primitive.color;
+            }
+
+            
+            //Intersect, in scene.Intersect(deze returned closest intersection)
+
+            //If null, black
+
+            //If reflective:
+            //Start nieuwe ray als reflection (trace(new ray, depth - 1))
+
+            //If diffuse:
+            //Start ray richting light source (traceIllumination())
         }
 
         //Vector3 I = intersection point on the sphere/plane

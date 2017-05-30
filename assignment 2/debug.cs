@@ -16,9 +16,8 @@ namespace template
         public Surface surface;
         //Display surface
 
-        float planewidth = 4;
-
-        int zoom = 5;
+        public float planewidth = 4;
+        public int zoom = 5;
 
         public Debug(Surface surface, Camera camera, Scene scene)
         {
@@ -121,7 +120,7 @@ namespace template
         }
 
         //createColor (with bitshifting)
-        private int createColor(Vector3 v)
+        public int createColor(Vector3 v)
         {
             int x = (int)(v.X * 255);
             int y = (int)(v.Y * 255);
