@@ -93,12 +93,22 @@ namespace template
             //make a green rectangle laying on it's side for each light
         }
 
+        //for when there is a collision
         public void RenderRay(Ray ray, Intersection intersection)
         {
             Vector3 intersectionpoint = ray.Origin + (intersection.Distance * ray.Dir);
             surface.Line(TX(ray.Origin.X), TY(ray.Origin.Z), 
                 TX(intersectionpoint.X), 
-                TY(intersectionpoint.Z), 0xFFFF00);
+                TY(intersectionpoint.Z), 0xFFFF00); //primary rays are yellow
+        }
+
+        //for when there isn't a collision
+        public void RenderRay(Ray ray)
+        {
+            Vector3 intersectionpoint = ray.Origin + (500 * ray.Dir);
+            surface.Line(TX(ray.Origin.X), TY(ray.Origin.Z),
+                TX(intersectionpoint.X),
+                TY(intersectionpoint.Z), 0xFFFF00); //primary rays are yellow
         }
 
         public void RenderShadowRay(Ray ray, Intersection intersection)
@@ -106,7 +116,15 @@ namespace template
             Vector3 intersectionpoint = ray.Origin + (intersection.Distance * ray.Dir);
             surface.Line(TX(ray.Origin.X), TY(ray.Origin.Z),
                 TX(intersectionpoint.X),
-                TY(intersectionpoint.Z), 0xFFFF00);
+                TY(intersectionpoint.Z), 0xFF0000); //shadowrays are red
+        }
+
+        public void RenderSecondaryRay(Ray ray, Intersection intersection)
+        {
+            Vector3 intersectionpoint = ray.Origin + (intersection.Distance * ray.Dir);
+            surface.Line(TX(ray.Origin.X), TY(ray.Origin.Z),
+                TX(intersectionpoint.X),
+                TY(intersectionpoint.Z), 0x00FF00); //secondary rays are green
         }
 
         public void RenderScreenPlane(Vector3 lu, Vector3 ru)

@@ -62,9 +62,8 @@ namespace template
                     ray.Dir = (screenpoint - ray.Origin).Normalized();
                     //normaliseer ray so length is 1
 
-
                     Vector3 color;
-                    if (y == 256 && (x % 63) == 0)
+                    if (y == 256 && (x % 31) == 0)
                     {
                         color = trace(ray, 6, true);
                     }
@@ -89,7 +88,11 @@ namespace template
 
             Intersection i = scene.intersect(r);
 
-            if(isDebugRay && i != null) debug.RenderRay(r, i);
+            if (isDebugRay && i != null) { debug.RenderRay(r, i); }
+            else if (isDebugRay && i == null)
+            {
+                debug.RenderRay(r);
+            }
 
             if (i == null)
             {
@@ -112,7 +115,9 @@ namespace template
                     Ray reflectionRay = new Ray();
                     reflectionRay.Dir = -(2 * (Vector3.Dot(i.normal, r.Dir)) * (i.normal - r.Dir));
                     reflectionRay.Origin = r.Origin + (r.Dir * i.Distance);
-                    return trace(reflectionRay, depth - 1, isDebugRay);
+
+                    if (isDebugRay) debug.RenderSecondaryRay(reflectionRay, i); //secondary rays are green
+                    return trace(reflectionRay, depth - 1, false);
                 }
             }
         }
