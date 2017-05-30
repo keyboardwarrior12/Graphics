@@ -41,14 +41,28 @@ namespace template
             //(ylength) / 2 isn't nice.
         }
 
-        public void MoveCam()
+        public void MoveCamX(Vector3 difference)
         {
-            
+            pos += difference;
+            screenld -= difference/4;
+            screenlu -= difference/4;
+            screenru -= difference/4;
         }
 
-        public void RotateCam()
+        public void MoveCamZ(Vector3 difference)
         {
-            
+            pos += difference;
+            screenld += difference;
+            screenlu += difference;
+            screenru += difference;
+        }
+
+        public void RotateCam(Vector3 xRotator)
+        {
+            dir += xRotator;
+            screenld *= xRotator;
+            screenlu *= xRotator;
+            screenru *= xRotator;
         }
     }
 }

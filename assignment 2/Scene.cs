@@ -25,7 +25,7 @@ namespace template
             Material m = new Mirror();
 
             //create plane
-            Plane p = new Plane(2.0f, new Vector3(0, 1, 0).Normalized(), new Vector3(.55f, 1, .44f), d);
+            Plane p = new Plane(2.0f, new Vector3(0, 1, 0).Normalized(), new Vector3(1f, 1, 1f), d);
             primitives.Add(p);
 
             //create spheres
@@ -44,6 +44,9 @@ namespace template
 
             Light light2 = new Light(new Vector3(10, 10, 10), new Vector3(6, 6, 0));
             lights.Add(light2);
+
+            Light light3 = new Light(new Vector3(100, 100, 100), new Vector3(2, 3, 8));
+            lights.Add(light3);
 
             //fancy green light
             Light greenLight = new Light(new Vector3(0, 30, 0), new Vector3(0, 8, 4));
@@ -107,7 +110,7 @@ namespace template
                             //if we found a valid intersection, it means we shouldn't do anything with the light
                             result = intersection;
 
-                            if (isDebugRay)debug.RenderShadowRay(shadowRay, result);//render shadowray if it's debug ray <!-- not working -->
+                            //if (isDebugRay)debug.RenderShadowRay(shadowRay, result);//render shadowray if it's debug ray <!-- not working -->
                             break; //break out since there is an intersection
                         }
                     }
